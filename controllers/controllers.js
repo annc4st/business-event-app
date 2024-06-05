@@ -10,7 +10,7 @@ const {
     fetchEventById,
     insertEvent,
     removeEvent, 
-    updateEvent
+    updateEvent,
 
         } = require("../models/models.js");
 
@@ -74,6 +74,7 @@ exports.getEvents = (req, res, next) => {
         res.status(200).send(events);
     })
     .catch((err) =>{
+        console.error('Error getting events:', err);
         next(err);
     });
 }
@@ -116,19 +117,18 @@ exports.deleteEvent = (req, res, next) => {
         next(error);
         })
 };
-// change number of attendees
-// exports.patchEvent = (req, res, next) => {
-//     const {event_id} = req.params;
-//     const {attendees} = req.body;
+// update list of attendees on event
+exports.patchEvent = (req, res, next) => {
+    const event_id = req.params.event_id;
+    const user_id = req.body.id;
+    
 
-//     if (!attendees) {
-//         return res.status(400).send({ message: "Invalid " });
-//     }
-//     return updateEvent(attendees)
-//     .then((event) => {
-//         res.status(200).send({event});
-//     })
-//     .catch((error) => {
-//         next(error);
-//         })
-// };
+    return updateEvent(event_id, user_id)
+    .then((event) => {
+        res.status(200).send({event});
+    })
+    .catch((error) => {
+        console.error('Error patching event:', error);
+        next(error);
+        })
+};

@@ -3,7 +3,7 @@ const eventsRouter = express.Router();
 const {
     getEvents, getEventById, postEvent, 
     deleteEvent, 
-    // patchEvent 
+    patchEvent 
 } = require('../controllers/controllers');
 
 
@@ -14,8 +14,7 @@ eventsRouter.route('/')
 eventsRouter.route('/:event_id')
 .get(getEventById)
 .delete(deleteEvent)
-// .patch(patchEvent)
-;
+.patch(patchEvent);
 
 
 module.exports = eventsRouter;

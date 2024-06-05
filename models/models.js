@@ -87,20 +87,35 @@ exports.updateCategory = async(slug,  newDescription) =>{
       JOIN locations ON events.location = locations.location_id;
       `;
     }
-    const { rows } = await db.query(eventsQuery);
-    return rows;
 
+    const result = await db.query(eventsQuery);
+
+    const eventsWithAttendees = await Promise.all(result.rows.map(async (event) => {
+      const attendeesQuery = `
+          SELECT users.id, users.username, users.email, users.thumbnail 
+          FROM eventguests
+          JOIN users ON eventguests.guest_id = users.id
+          WHERE eventguests.event_id = $1;`;
+      const attendeesResult = await db.query(attendeesQuery, [event.event_id]);
+      event.attendees = attendeesResult.rows;
+      return event;
+  }));
+
+  return eventsWithAttendees;
   }
 
-exports.fetchEventById = (id) => {
-  return db.query(`
-    SELECT 
+
+exports.fetchEventById = async (id) => {
+  let eventQuery;
+
+  eventQuery = `SELECT 
       events.event_id, 
       events.event_name, 
       events.description, 
       events.timestamp,
       events.ticket_price, 
-      events.image_url, 
+      events.image_url,
+
       categories.slug AS category, 
       locations.postcode, 
       locations.first_line_address, 
@@ -109,13 +124,21 @@ exports.fetchEventById = (id) => {
     FROM events
     JOIN categories ON events.category = categories.slug
     JOIN locations ON events.location = locations.location_id
-    WHERE events.event_id = $1;`, [id])
-    .then((result) => {
-      if (result.rows.length === 0) {
-        return Promise.reject({ status: 404, message: "Event does not exist" });
-      }
-      return result.rows[0];
-    });
+    WHERE events.event_id = $1;`
+
+    const result = await db.query(eventQuery, [id])
+
+    const eventWithGuests = await Promise.all(result.rows.map(async (event) => {
+      const attendeesQuery = `
+          SELECT users.id, users.username, users.email, users.thumbnail 
+          FROM eventguests
+          JOIN users ON eventguests.guest_id = users.id
+          WHERE eventguests.event_id = $1;`;
+          const attendeesResult = await db.query(attendeesQuery, [event.event_id]);
+          event.attendees = attendeesResult.rows;
+          return event
+    }));
+    return eventWithGuests;
 };
 
 exports.insertEvent = async (newEvent) => {
@@ -158,7 +181,6 @@ exports.insertEvent = async (newEvent) => {
 
   const values = [event_name, category, description, timestamp, ticket_price, location, image_url];
 
-
   try {
     const result = await db.query(query, values);
     return result.rows[0];
@@ -178,22 +200,33 @@ exports.removeEvent = async(event_id) => {
   return db.query(`DELETE FROM events WHERE event_id =$1;`, [event_id]);
 }
 
-// exports.updateEvent = async(event_id, attendees) => {
-//   const eventExists = await db.query(`SELECT * FROM events WHERE event_id = $1;`, [event_id]);
+exports.updateEvent = async(event_id, user_id) => {
 
-//   if (eventExists.rows.length ===0) {
-//     return Promise.reject({
-//       status: 404, message: 'Event does not exist'
-//     })
-//   } 
-//   return db.query(`
-//   UPDATE events SET 
+  const eventExists = await db.query(`SELECT * FROM events WHERE event_id = $1;`, [event_id]);
+
+  if (eventExists.rows.length ===0) {
+    return Promise.reject({
+      status: 404, message: 'Event does not exist'
+    })
+  } 
+
+  const userExists = await db.query(`SELECT * FROM users WHERE id = $1;`, [user_id]);
+  if (userExists.rows.length === 0) {
+    return Promise.reject({
+        status: 404, message: 'User does not exist'
+    });
+}
+ 
+  await db.query(`
+    INSERT INTO eventguests(event_id, guest_id)
+    VALUES($1, $2)
+    ON CONFLICT DO NOTHING;`, [event_id, user_id]);
+
+  const updatedEvent = await db.query(
+    `SELECT * FROM events WHERE event_id = $1;`,
+     [event_id]);
+
+     return updatedEvent.rows[0];
+
+}
   
-//   WHERE event_id = $1
-//   RETURNING *
-//   ;`, [event_id, ])
-//   .then((result) => {
-//     return result.rows[0];
-//   });
-
-// };

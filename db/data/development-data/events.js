@@ -7,7 +7,7 @@ module.exports = [
         time: '18:00',
         ticket_price: 0.00,
         location: 1,
-        image_url: "",
+        image_url: ""
 
     },
     {
@@ -18,7 +18,7 @@ module.exports = [
         time: '18:00',
         ticket_price: 0.00,
         location: 2,
-        image_url: "",
+        image_url: ""
     },
     {
         event_name: "Triathlon race at Salford",
@@ -28,6 +28,6 @@ module.exports = [
         time: '10:00',
         ticket_price: 60.00,
         location: 3,
-        image_url: "",
+        image_url: ""
     }
 ]

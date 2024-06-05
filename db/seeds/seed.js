@@ -3,7 +3,10 @@ const db = require('../connection');
 
 
 const seed = ({ eventData, categoryData, locationData, userData}) => {
-    return db.query(`DROP TABLE IF EXISTS events;`)
+    return db.query(`DROP TABLE IF EXISTS eventguests;`)
+    .then(() => {
+        return db.query(`DROP TABLE IF EXISTS events;`)
+        })
         .then(() => {
             return db.query(`DROP TABLE IF EXISTS categories;`);
         })
@@ -63,6 +66,15 @@ const seed = ({ eventData, categoryData, locationData, userData}) => {
             );
         })
         .then(() => {
+            return db.query(`
+                CREATE TABLE eventguests (
+                    event_id INT REFERENCES events(event_id),
+                    guest_id INT REFERENCES users(id),
+                    PRIMARY KEY (event_id, guest_id)
+                );`
+            );
+        })
+        .then(() => {
             // Insert data into categories and locations tables
             const insertCategoriesQueryStr = format(
                 `INSERT INTO categories(slug, description) VALUES %L;`,
@@ -95,7 +107,7 @@ const seed = ({ eventData, categoryData, locationData, userData}) => {
 
         .then(() => {
             const insertEventsQueryStr = format(
-                `INSERT INTO events (
+                `INSERT INTO events(
                     event_name, category, description, timestamp, ticket_price, 
                     location, image_url) VALUES %L;`,
                 eventData.map(({
