@@ -2,15 +2,23 @@ const express = require('express');
 const passport = require('passport');
 const authRouter = express.Router();
 
-authRouter
-.route('/')
 
+authRouter.get('/login', (req, res) => {
+  res.send('Login Page');
+});
 
-authRouter
-.route('/login')
+authRouter.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
 
-authRouter
-.route('/logout')
+authRouter.get('/google', passport.authenticate('google', {
+  scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar']
+}));
 
+authRouter.get('/google/redirect', passport.authenticate('google'), (req, res) => {
+  res.redirect('api/profile');
+});
 
 module.exports = authRouter;
+

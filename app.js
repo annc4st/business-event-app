@@ -1,13 +1,47 @@
+// require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV || 'development'}` });
+
 const express = require('express');
 const cors = require('cors');
+const passport = require('passport');
+require('dotenv').config();
+const cookieSession = require('cookie-session');
+// const expressSession = require('express-session'); // changed from cookie-session
+const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api-router'); // add when ready
-
+const sequelize = require('./sequelize');
+// const User = require('./models/user-model');
+require('./config/passport-setup');
+const keys = require('./config/keys');
 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+
+// middleware
+app.use(bodyParser.json());
+app.use(cookieSession({
+  maxAge : 24 *60 *60 * 1000,
+  keys : [keys.session.cookieKey]
+}));
+//or
+// app.use(expressSession({
+//     secret: keys.session.cookieKey,
+//     resave: false,
+//     saveUninitialized: false
+// }));
+
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Routes
 app.use('/api', apiRouter);
+
 
 
 app.all('/*',(request, response) =>{
@@ -29,6 +63,12 @@ app.use((error, req, res, next) => {
   }
   });
 
-
+// Synchronize models and start the server
+// sequelize.sync().then(() => {
+//   console.log('Database & tables created!');
+//   app.listen(9001, () => {
+//     console.log('Server is running on port 9000');
+//   });
+// }).catch(err => console.error('Error synchronizing database:', err));
 
 module.exports = app;

@@ -1,4 +1,5 @@
 const db = require("../db/connection.js");
+const format = require('pg-format');
 
 const { convertToUTC } = require('./util_func.js');
 
@@ -29,7 +30,17 @@ exports.removeCategory = async (slug) => {
     `DELETE FROM categories WHERE slug = $1;`, [slug])
 };
 
-exports.updateCategory =
+exports.updateCategory = async(slug,  newDescription) =>{
+  const catExists = await db.query(`SELECT * FROM categories WHERE slug = $1;`, [slug])
+  if (catExists.rows.length === 0) {
+    return Promise.reject({ status: 404, message: 'Category does not exist' });
+  }
+  return db.query(`
+  UPDATE categories SET description =$2 WHERE slug = $1 RETURNING *;`, [slug, newDescription])
+  .then((result) => {
+    return result.rows[0];
+  });
+};
 
   exports.fetchEvents = async (category) => {
     let eventsQuery;
@@ -43,10 +54,10 @@ exports.updateCategory =
       }
 
       eventsQuery = `SELECT 
+        events.event_id,
         events.event_name, 
         events.description, 
-        events.date, 
-        events.time, 
+        events.timestamp,
         events.ticket_price, 
         events.image_url, 
         categories.slug AS category, 
@@ -60,10 +71,10 @@ exports.updateCategory =
       WHERE events.category = '${category}';`
     } else {
       eventsQuery = `SELECT 
+        events.event_id,
         events.event_name, 
         events.description, 
-        events.date, 
-        events.time, 
+        events.timestamp,
         events.ticket_price, 
         events.image_url, 
         categories.slug AS category, 
@@ -87,8 +98,7 @@ exports.fetchEventById = (id) => {
       events.event_id, 
       events.event_name, 
       events.description, 
-      events.date, 
-      events.time, 
+      events.timestamp,
       events.ticket_price, 
       events.image_url, 
       categories.slug AS category, 
@@ -114,7 +124,8 @@ exports.insertEvent = async (newEvent) => {
   } = newEvent;
 
   // Convert date and time to UTC
-  const utcDateTime = convertToUTC(date, time);
+  // const utcDateTime = convertToUTC(date, time);
+  
 
   if (!image_url) {
     image_url = "https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700"
@@ -138,15 +149,14 @@ exports.insertEvent = async (newEvent) => {
     }
   }
 
-  const query = `
-    INSERT INTO events (event_name, category, description, date, 
-      time, ticket_price, location, image_url)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;
-    `;
+  const timestamp = new Date(new Date(`${date}T${time}Z`).getTime() - new Date(`${date}T${time}Z`).getTimezoneOffset() *60000).toISOString();
 
-  const values = [event_name, category, description,
-    utcDateTime.split('T')[0],
-    utcDateTime.split('T')[1], ticket_price, location, image_url];
+  const query = `
+    INSERT INTO events (event_name, category, description, timestamp, ticket_price, location, image_url)
+    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
+  `;
+
+  const values = [event_name, category, description, timestamp, ticket_price, location, image_url];
 
 
   try {
@@ -156,3 +166,34 @@ exports.insertEvent = async (newEvent) => {
     throw error;
   }
 };
+
+exports.removeEvent = async(event_id) => {
+  const eventExists = await db.query(`SELECT * FROM events WHERE event_id = $1;`, [event_id]);
+
+  if (eventExists.rows.length ===0) {
+    return Promise.reject({
+      status: 404, message: 'Event does not exist'
+    })
+  } 
+  return db.query(`DELETE FROM events WHERE event_id =$1;`, [event_id]);
+}
+
+// exports.updateEvent = async(event_id, attendees) => {
+//   const eventExists = await db.query(`SELECT * FROM events WHERE event_id = $1;`, [event_id]);
+
+//   if (eventExists.rows.length ===0) {
+//     return Promise.reject({
+//       status: 404, message: 'Event does not exist'
+//     })
+//   } 
+//   return db.query(`
+//   UPDATE events SET 
+  
+//   WHERE event_id = $1
+//   RETURNING *
+//   ;`, [event_id, ])
+//   .then((result) => {
+//     return result.rows[0];
+//   });
+
+// };

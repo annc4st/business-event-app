@@ -8,7 +8,9 @@ const {
     updateCategory,
     fetchEvents,
     fetchEventById,
-    insertEvent
+    insertEvent,
+    removeEvent, 
+    updateEvent
 
         } = require("../models/models.js");
 
@@ -52,11 +54,7 @@ exports.patchCategory = (req, res, next) => {
     const {slug} = req.params;
     const {description} = req.body;
 
-    if(isNaN(slug)) {
-        return res.status(400).send({message: "Invalid slug"});
-    }
-
-    if (isNaN(description)) {
+    if (!description) {
         return res.status(400).send({message: "Invalid description"});
     }
 
@@ -106,5 +104,31 @@ exports.postEvent = (req, res, next) => {
         console.error("Controller - Error posting event:", error);
         next(error);
       })
-
 };
+
+exports.deleteEvent = (req, res, next) => {
+    const {event_id} = req.params;
+    removeEvent(event_id).then(() =>{
+        res.status(204).send();
+    })
+    .catch((error) => {
+        console.error('Error deleting event:', error);
+        next(error);
+        })
+};
+// change number of attendees
+// exports.patchEvent = (req, res, next) => {
+//     const {event_id} = req.params;
+//     const {attendees} = req.body;
+
+//     if (!attendees) {
+//         return res.status(400).send({ message: "Invalid " });
+//     }
+//     return updateEvent(attendees)
+//     .then((event) => {
+//         res.status(200).send({event});
+//     })
+//     .catch((error) => {
+//         next(error);
+//         })
+// };

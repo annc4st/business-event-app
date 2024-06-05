@@ -30,6 +30,4 @@ module.exports = [
         location: 3,
         image_url: "",
     }
-    
-
 ]

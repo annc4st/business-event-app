@@ -2,7 +2,7 @@ const format = require('pg-format');
 const db = require('../connection');
 
 
-const seed = ({ eventData, categoryData, locationData, superUser}) => {
+const seed = ({ eventData, categoryData, locationData, userData}) => {
     return db.query(`DROP TABLE IF EXISTS events;`)
         .then(() => {
             return db.query(`DROP TABLE IF EXISTS categories;`);
@@ -41,7 +41,8 @@ const seed = ({ eventData, categoryData, locationData, superUser}) => {
             google_id VARCHAR(255) UNIQUE NOT NULL,
             username VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
-            role VARCHAR(50) DEFAULT 'user'
+            role VARCHAR(50) DEFAULT 'user',
+            thumbnail VARCHAR(255)
         );`
             );
 
@@ -54,8 +55,7 @@ const seed = ({ eventData, categoryData, locationData, superUser}) => {
             event_name VARCHAR(255) NOT NULL,
             category VARCHAR NOT NULL REFERENCES categories(slug) ON DELETE CASCADE,
             description TEXT,
-            date DATE,
-            time TIME,
+            timestamp TIMESTAMP NOT NULL,
             ticket_price DECIMAL(4, 2),
             location INT REFERENCES locations(location_id),
             image_url VARCHAR(255)
@@ -75,39 +75,44 @@ const seed = ({ eventData, categoryData, locationData, superUser}) => {
                     second_line_address, city) VALUES %L;`,
                 locationData.map(({ location_id, postcode, first_line_address,
                     second_line_address, city }) =>
-                    [location_id,
-                        postcode,
+                    [location_id, postcode,
                         first_line_address,
                         second_line_address,
                         city])
             );
             const locationsPromise = db.query(insertLocationsQueryStr);
 
-            // const insertSuperUserQueryStr = format(
-            //     `INSERT INTO users (google_id, username, email, role) VALUES %L;`,
-            //     [[superUser.google_id, superUser.username, superUser.email, 'admin']]
-            //   );
-            //   const superUserPromise = db.query(insertSuperUserQueryStr);
-            // superUserPromise
-        
-              return Promise.all([categoriesPromise, locationsPromise]);
+            const insertUsersQueryStr = format(
+                `INSERT INTO users (google_id, username, email, role, thumbnail) VALUES %L;`,
+                userData.map(({
+                     google_id, username, email, role, thumbnail }) => 
+                        [google_id, username, email, role, thumbnail])
+                    );
+              const usersPromise = db.query(insertUsersQueryStr);
+         
+              return Promise.all([categoriesPromise, locationsPromise, usersPromise]);
             })
 
         .then(() => {
             const insertEventsQueryStr = format(
                 `INSERT INTO events (
-                    event_name, category, description, date, time, ticket_price, 
+                    event_name, category, description, timestamp, ticket_price, 
                     location, image_url) VALUES %L;`,
                 eventData.map(({
                     event_name, category, description, date, time,
                     ticket_price, location, image_url
-                }) => [
-                        event_name, category, description, date, time,
+                }) => {
+                    const timestamp = new Date(new Date(`${date}T${time}Z`).getTime() - new Date(`${date}T${time}Z`).getTimezoneOffset() *60000).toISOString();
+                    return [
+                        event_name, category, description, timestamp,
                         ticket_price, location, image_url]
-                )
+                    })
             );
             return db.query(insertEventsQueryStr);
-        });
+        })
+        .catch((err) => {
+            console.error('Error seeding database:', err);
+          });
 
 };
 module.exports = seed;

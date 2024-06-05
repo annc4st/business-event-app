@@ -231,6 +231,23 @@ describe('POST /api/events', () => {
       .then((response) => {
         expect(response.body.message).toBe('Location does not exist');
       })
+  });
+})
 
+
+describe("DELETE /api/events/:eventToDel", () => {
+  test("responds with status 204 when we delete existing event", () => {
+    return request(app)
+      .delete(`/api/events/1`)
+      .expect(204)
+  });
+
+  test("responds with status 404 when we delete non-existing event", () => {
+    return request(app)
+      .delete(`/api/events/1654`)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.message).toBe("Event does not exist");
+      })
   });
 })
