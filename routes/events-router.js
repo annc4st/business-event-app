@@ -2,8 +2,8 @@ const express = require('express');
 const eventsRouter = express.Router();
 const {
     getEvents, getEventById, postEvent, 
-    deleteEvent, 
-    patchEvent 
+    deleteEvent, patchEvent,
+getEventGuests
 } = require('../controllers/controllers');
 
 
@@ -14,7 +14,12 @@ eventsRouter.route('/')
 eventsRouter.route('/:event_id')
 .get(getEventById)
 .delete(deleteEvent)
-.patch(patchEvent);
+.patch(patchEvent); ///adding guest
+
+
+eventsRouter.route('/:event_id/guests')
+.get(getEventGuests);
+ 
 
 
 module.exports = eventsRouter;

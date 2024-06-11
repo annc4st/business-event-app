@@ -7,18 +7,22 @@ require('dotenv').config();
 const cookieSession = require('cookie-session');
 // const expressSession = require('express-session'); // changed from cookie-session
 const bodyParser = require('body-parser');
-const apiRouter = require('./routes/api-router'); // add when ready
-const sequelize = require('./sequelize');
-// const User = require('./models/user-model');
+const apiRouter = require('./routes/api-router'); 
+const authRouter = require('./routes/auth-router');
+
 require('./config/passport-setup');
 const keys = require('./config/keys');
 
+const multer = require('multer');
+
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 
 // middleware
 app.use(bodyParser.json());
@@ -41,7 +45,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/api', apiRouter);
-
+app.use('/api/auth', authRouter);
 
 
 app.all('/*',(request, response) =>{
