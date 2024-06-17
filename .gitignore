@@ -2,4 +2,3 @@ node_modules
 .env.*
 play.sql
 play.js
-config/keys.js
