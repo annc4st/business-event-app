@@ -1,4 +1,4 @@
-// require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV || 'development'}` });
+require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV || 'development'}` });
 
 const express = require('express');
 const cors = require('cors');
@@ -11,7 +11,7 @@ const apiRouter = require('./routes/api-router');
 const authRouter = require('./routes/auth-router');
 
 require('./config/passport-setup');
-const keys = require('./config/keys');
+// const keys = require('./config/keys');
 
 const multer = require('multer');
 
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieSession({
   maxAge : 24 *60 *60 * 1000,
-  keys : [keys.session.cookieKey]
+  keys: [process.env.COOKIE_KEY]
 }));
 //or
 // app.use(expressSession({
