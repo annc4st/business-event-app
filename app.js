@@ -20,13 +20,14 @@ const app = express();
 
  
 
-  const corsOptions ={
-    origin: ['http://localhost:3000', 'https://business-events.netlify.app/'],
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
+ const corsOptions ={
+  //  origin: 'http://localhost:3000',
+  origin: 'https://business-event-app.netlify.app/',
+   credentials:true,            //access-control-allow-credentials:true
 }
  
 app.use(cors(corsOptions));
+ 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
