@@ -2,12 +2,13 @@
   "name": "business-event-app",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "listen.js",
   "scripts": {
     "start": "node listen.js",
     "test": "NODE_ENV=test npm run setup-dbs && npm run seed && jest",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
+    "seed-prod": "NODE_ENV=production npm run seed",
     "prepare": "husky install"
   },
   "author": "",
@@ -20,6 +21,7 @@
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "googleapis": "^137.1.0",
+    "jsonwebtoken": "^9.0.2",
     "luxon": "^3.4.4",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.2",

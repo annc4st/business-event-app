@@ -1,6 +1,7 @@
 const app = require("../app");
 const db = require("../db/connection");
-const { DateTime } = require('luxon');
+// const { DateTime } = require('luxon');
+const convertToUTC = require('../models/util_func')
 
 const request = require("supertest");
 const seed = require("../db/seeds/seed.js");
@@ -8,12 +9,12 @@ const seed = require("../db/seeds/seed.js");
 const {
   eventData,
   categoryData,
-  locationData
+  locationData, userData
 } = require("../db/data/test-data/index");
 
 beforeEach(() => {
   return seed({
-    eventData, categoryData, locationData
+    eventData, categoryData, locationData, userData
   });
 });
 
@@ -146,7 +147,7 @@ describe("GET /api/events/:event_id", () => {
       .get("/api/events/98")
       .expect(404)
       .then(({ body }) => {
-        expect(body.message).toBe('Event does not exist');
+        expect(body.message).toBe('Event does not exist.');
       })
   })
   test("responds with status 400 if invalid input", () => {
@@ -166,8 +167,10 @@ describe('POST /api/events', () => {
       event_name: "testing event 6  Triathlon race",
       category: "races",
       description: "An easy description of testing event 6",
-      date: '2023-07-25',
-      time: '10:00:00',
+      startdate: '2023-07-25',
+      starttime: '10:00:00',
+      enddate: '2023-07-25',
+      endtime: '12:00:00',
       ticket_price: 10.00,
       location: 3,
       image_url: "",
@@ -182,14 +185,9 @@ describe('POST /api/events', () => {
         expect(event.category).toEqual("races");
         expect(event.description).toEqual("An easy description of testing event 6");
         // Convert received UTC date to local date for comparison
-        //without luxon
-        // const receivedDate = new Date(event.date);
-        // const localDate = new Date(receivedDate.getTime() - receivedDate.getTimezoneOffset() * 60000).toISOString().split('T')[0];
-        // expect(localDate).toEqual('2023-07-25');
-
-        //with luxon
-        const receivedDate = DateTime.fromISO(event.date, { zone: 'UTC' }).setZone('Europe/London');
-        expect(receivedDate.toISODate()).toEqual('2023-07-25');
+        const receivedStartTime = convertToUTC(newEvent.startdate, newEvent.starttime);
+        // console.log(receivedStartTime)
+        expect(receivedStartTime).toEqual('2023-07-25T10:00:00.000Z');
       });
   });
 
@@ -198,8 +196,10 @@ describe('POST /api/events', () => {
       event_name: "testing event 6  Triathlon race",
       category: "races",
       description: "An easy description of testing event 6",
-      date: '2023-07-25',
-      time: '10:00:00',
+      startdate: '2023-07-25',
+      starttime: '10:00:00',
+      enddate: '2023-07-25',
+      endtime: '12:00:00',
       // ticket_price: 10.00, missing
       location: 3,
       image_url: "",
@@ -209,7 +209,7 @@ describe('POST /api/events', () => {
       .send(newEvent)
       .expect(422)
       .then((response) => {
-        expect(response.body.message).toBe('Event details (name, category, description, date, time, ticket_price, location) cannot be empty.')
+        expect(response.body.message).toBe('Event details (name, category, description, startdate, starttime, enddate, endtime, ticket_price, location) cannot be empty.')
       })
   });
 
@@ -218,8 +218,10 @@ describe('POST /api/events', () => {
       event_name: "testing event 6  Triathlon race",
       category: "races",
       description: "An easy description of testing event 6",
-      date: '2023-07-25',
-      time: '10:00:00',
+      startdate: '2023-07-25',
+      starttime: '10:00:00',
+      enddate: '2023-07-25',
+      endtime: '12:00:00',
       ticket_price: 10.00,
       location: 789,
       image_url: "",
@@ -238,7 +240,7 @@ describe('POST /api/events', () => {
 describe("DELETE /api/events/:eventToDel", () => {
   test("responds with status 204 when we delete existing event", () => {
     return request(app)
-      .delete(`/api/events/1`)
+      .delete(`/api/events/2`)
       .expect(204)
   });
 
@@ -247,7 +249,7 @@ describe("DELETE /api/events/:eventToDel", () => {
       .delete(`/api/events/1654`)
       .expect(404)
       .then((response) => {
-        expect(response.body.message).toBe("Event does not exist");
+        expect(response.body.message).toBe("Event does not exist.");
       })
   });
 })

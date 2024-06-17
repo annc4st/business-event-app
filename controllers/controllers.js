@@ -10,11 +10,11 @@ const {
     fetchEventById,
     insertEvent,
     removeEvent, 
-    updateEvent,
+    updateGuestList,
     fetchLocations,
     fetchLocationById,
     insertLocation, removeLocation,
-    fetchEventGuests,
+    fetchEventGuests, removeGuestFromEvent
 
         } = require("../models/models.js");
 
@@ -97,17 +97,20 @@ exports.getEventById = (req, res, next) => {
 exports.postEvent = (req, res, next) => {
     const newEvent = req.body;
     if(!newEvent.event_name || 
-        !newEvent.category || !newEvent.description || !newEvent.date ||
-        !newEvent.time || !newEvent.ticket_price || !newEvent.location 
+        !newEvent.category || !newEvent.description || !newEvent.startdate ||
+        !newEvent.starttime || 
+        !newEvent.enddate ||
+        !newEvent.endtime ||
+        !newEvent.ticket_price || !newEvent.location 
         ){
-            return res.status(422).send({ message: 'Event details (name, category, description, date, time, ticket_price, location) cannot be empty.' });
+            return res.status(422).send({ message: 'Event details (name, category, description, startdate, starttime, enddate, endtime, ticket_price, location) cannot be empty.' });
         }
     return insertEvent(newEvent)
     .then((event) => {
         res.status(201).send({event})
     })
     .catch((error) => {
-        console.error("Controller - Error posting event:", error);
+        // console.log("Controller - Error posting event:", error);
         next(error);
       })
 };
@@ -115,27 +118,15 @@ exports.postEvent = (req, res, next) => {
 exports.deleteEvent = (req, res, next) => {
     const {event_id} = req.params;
     removeEvent(event_id).then(() =>{
+        // console.log("log controller line 118>> ",response)
         res.status(204).send();
     })
     .catch((err) => {
-        console.error('Error deleting event:', err);
+        console.log('Error deleting event:', err);
         next(err);
         })
 };
-// update list of attendees on event
-exports.patchEvent = (req, res, next) => {
-    const event_id = req.params.event_id;
-    const user_id = req.body.id;
 
-    return updateEvent(event_id, user_id)
-    .then((event) => {
-        res.status(200).send({event});
-    })
-    .catch((error) => {
-        console.error('Error patching event:', error);
-        next(error);
-        })
-};
 
 //LOCATIONS
 
@@ -183,7 +174,7 @@ exports.deleteLocation = (req, res, next) => {
     const {location_id} = req.params;
 
     removeLocation(location_id)
-    .then((location) => {
+    .then(() => {
         res.status(204).send();
     })
     .catch((err) =>{
@@ -208,6 +199,34 @@ exports.getEventGuests = (req, res, next) => {
     .catch((err) =>{
         console.log('Error getting guests:', err);
         next(err);
+    });
+}
+
+// update list of attendees on event
+exports.patchEventGuests = (req, res, next) => {
+    const event_id = req.params.event_id;
+    const user_id = req.body.id;
+
+    return updateGuestList(event_id, user_id)
+    .then((guestList) => {
+        res.status(200).send({ guestList });
+    })
+    .catch((error) => {
+        console.error('Error updating guestList:', error);
+        next(error);
+        })
+};
+
+exports.deleteEventGuest = (req, res, next) => {
+    const event_id = req.params.event_id;
+    const user_id = req.body.id;
+    return removeGuestFromEvent(event_id, user_id)
+    .then((guestList) => {
+        res.status(200).send({ guestList });
+    })
+    .catch((error) => {
+        console.error('Error removing guest:', error);
+        next(error);
     });
 }
 

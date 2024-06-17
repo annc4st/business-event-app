@@ -31,7 +31,7 @@ passport.use(new GoogleStrategy({
     console.log(profile);
     try {
         // Check if user already exists
-        // let existingUser = await User.findOne({ where: { googleId: profile.id } });
+  
         const userResult = await db.query('SELECT * FROM users WHERE google_id = $1', [profile.id]);
         const existingUser = userResult.rows[0];
         

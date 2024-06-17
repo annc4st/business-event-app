@@ -1,5 +1,6 @@
 const format = require('pg-format');
 const db = require('../connection');
+const convertToUTC = require('../../models/util_func')
 
 
 const seed = ({ eventData, categoryData, locationData, userData}) => {
@@ -13,15 +14,13 @@ const seed = ({ eventData, categoryData, locationData, userData}) => {
         .then(() => {
             return db.query(`DROP TABLE IF EXISTS locations;`);
         })
-        // .then(() => {
-        //     return db.query(`DROP TABLE IF EXISTS comments;`);
-        // })
+
         .then(() => {
             return db.query(`DROP TABLE IF EXISTS users;`);
         })
 
         .then(() => {
-            // Create categories and locations tables
+
             const categoriesTablePromise = db.query(
                 `CREATE TABLE categories (
             slug VARCHAR PRIMARY KEY,
@@ -58,7 +57,8 @@ const seed = ({ eventData, categoryData, locationData, userData}) => {
             event_name VARCHAR(255) NOT NULL,
             category VARCHAR NOT NULL REFERENCES categories(slug) ON DELETE CASCADE,
             description TEXT,
-            timestamp TIMESTAMP NOT NULL,
+            start_t TIMESTAMP NOT NULL,
+            end_t TIMESTAMP NOT NULL,
             ticket_price DECIMAL(4, 2),
             location INT REFERENCES locations(location_id),
             image_url VARCHAR(255)
@@ -108,15 +108,17 @@ const seed = ({ eventData, categoryData, locationData, userData}) => {
         .then(() => {
             const insertEventsQueryStr = format(
                 `INSERT INTO events(
-                    event_name, category, description, timestamp, ticket_price, 
+                    event_name, category, description, start_t, end_t, ticket_price, 
                     location, image_url) VALUES %L;`,
                 eventData.map(({
-                    event_name, category, description, date, time,
+                    event_name, category, description, startdate, starttime, enddate, endtime,
                     ticket_price, location, image_url
                 }) => {
-                    const timestamp = new Date(new Date(`${date}T${time}Z`).getTime() - new Date(`${date}T${time}Z`).getTimezoneOffset() *60000).toISOString();
+
+                    const start_t = convertToUTC(startdate, starttime);
+                    const end_t = convertToUTC(enddate, endtime);
                     return [
-                        event_name, category, description, timestamp,
+                        event_name, category, description, start_t, end_t,
                         ticket_price, location, image_url]
                     })
             );

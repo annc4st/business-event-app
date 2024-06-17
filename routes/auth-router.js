@@ -1,6 +1,9 @@
 const express = require('express');
 const passport = require('passport');
 const authRouter = express.Router();
+// const { verifyToken } = require('../middlewares/auth');
+// const { getUserEvents } = require('../controllers/controllers');
+
 
 authRouter.get('/logout', (req, res) => {
   req.logout();
@@ -27,6 +30,8 @@ authRouter.get('/user', (req, res) => {
       res.status(401).json({ message: 'Unauthorized' });
   }
 });
+
+// authRouter.get('/user/events', verifyToken, getUserEvents);
 
 
 module.exports = authRouter;
