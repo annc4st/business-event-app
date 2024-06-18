@@ -19,14 +19,31 @@ const multer = require('multer');
 const app = express();
 
  
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://business-event-app.netlify.app', 
+];
 
- const corsOptions ={
-  //  origin: 'http://localhost:3000',
-  origin: 'https://business-event-app.netlify.app/',
-   credentials:true,            //access-control-allow-credentials:true
-}
- 
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+};
+
 app.use(cors(corsOptions));
+// Your middleware to set headers explicitly (optional, for completeness)
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
  
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
