@@ -2,21 +2,19 @@ require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV ||
 
 const express = require('express');
 const cors = require('cors');
+
+const localStrategy = require('passport-local').Strategy;
 const passport = require('passport');
-require('dotenv').config();
-const cookieSession = require('cookie-session');
-// const expressSession = require('express-session'); // changed from cookie-session
+const expressSession = require('express-session'); // changed from cookie-session
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api-router'); 
-const authRouter = require('./routes/auth-router');
 
-require('./config/passport-setup');
-// const keys = require('./config/keys');
-
-const multer = require('multer');
+require('./config/localpassport-setup');
 
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
  
 const allowedOrigins = [
@@ -36,7 +34,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// Your middleware to set headers explicitly (optional, for completeness)
+// middleware to set headers explicitly (optional, for completeness)
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin);
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -45,21 +43,15 @@ app.use((req, res, next) => {
   next();
 });
  
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
-// middleware
+// more middleware
 app.use(bodyParser.json());
-app.use(cookieSession({
-  maxAge : 24 *60 *60 * 1000,
-  keys: [process.env.COOKIE_KEY]
+
+app.use(expressSession({
+    secret: 'super-secret',
+    resave: false,
+    saveUninitialized: false
 }));
-//or
-// app.use(expressSession({
-//     secret: keys.session.cookieKey,
-//     resave: false,
-//     saveUninitialized: false
-// }));
 
 
 // Passport middleware
@@ -69,7 +61,6 @@ app.use(passport.session());
 
 // Routes
 app.use('/api', apiRouter);
-app.use('/api/auth', authRouter);
 
 
 app.all('/*',(request, response) =>{
@@ -91,12 +82,5 @@ app.use((error, req, res, next) => {
   }
   });
 
-// Synchronize models and start the server
-// sequelize.sync().then(() => {
-//   console.log('Database & tables created!');
-//   app.listen(9001, () => {
-//     console.log('Server is running on port 9000');
-//   });
-// }).catch(err => console.error('Error synchronizing database:', err));
 
 module.exports = app;

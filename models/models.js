@@ -109,7 +109,7 @@ exports.fetchEvents = async (category) => {
   const eventsWithAttendees = await Promise.all(
     result.rows.map(async (event) => {
       const attendeesQuery = `
-          SELECT users.id, users.username, users.email, users.thumbnail 
+          SELECT users.id, users.username, users.email 
           FROM eventguests
           JOIN users ON eventguests.guest_id = users.id
           WHERE eventguests.event_id = $1;`;
