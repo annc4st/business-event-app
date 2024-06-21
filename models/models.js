@@ -152,8 +152,7 @@ exports.fetchEventById = async (id) => {
       SELECT 
         users.id, 
         users.username, 
-        users.email, 
-        users.thumbnail 
+        users.email 
       FROM eventguests
       JOIN users ON eventguests.guest_id = users.id
       WHERE eventguests.event_id = $1;`;
@@ -340,7 +339,7 @@ exports.fetchEventGuests = async (event_id) => {
   }
 
   const guestQuery = `
-    SELECT users.id, users.username, users.email, users.thumbnail
+    SELECT users.id, users.username, users.email
     FROM eventguests
     JOIN users ON eventguests.guest_id = users.id
     WHERE eventguests.event_id = $1;`;

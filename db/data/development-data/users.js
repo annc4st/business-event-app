@@ -9,6 +9,7 @@ module.exports = [
         username: "user1",
         userpassword: "user1",
         email: "user1@mail.com",
+        role: "user"
     },
     {
         username: "user2",

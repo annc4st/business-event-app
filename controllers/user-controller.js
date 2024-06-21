@@ -8,13 +8,12 @@ exports.register = async (req, res) => {
         const newUser = await createUser(username, password, email, role);
         res.status(201).json({ message: 'User created successfully', user: newUser });
     } catch (error) {
+        console.log("error at registerign user ", error)
         res.status(500).json({ error: 'Failed to create user' });
     }
 };
 
 exports.login = (req, res) => {
-    console.log('Login controller invoked');  // Add this line
-    console.log('Authenticated user:', req.user);  // Add this line
     const { id, username, email, role } = req.user; // Extracting only the required fields
   res.status(200).send({
     message: 'Logged in successfully',
