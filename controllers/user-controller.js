@@ -1,6 +1,6 @@
 const fs = require("fs/promises");
 
-const {findByUsername, findById, createUser, fetchAllUsers} = require('../models/user-model');
+const {findByUsername, findById, createUser, fetchAllUsers, fetchUserSignedUpEvents} = require('../models/user-model');
 
 exports.register = async (req, res) => {
     const { username, password, email, role } = req.body;
@@ -45,4 +45,15 @@ exports.getAllUsers = (req, res, next) => {
     .catch((err) =>{
         next(err);
     });
+}
+
+exports.getUserSignedUpEvents = (req, res, next) => {
+    const userId = req.user.id; 
+    fetchUserSignedUpEvents(userId)
+    .then((usersEvents) => {
+        res.status(200).send(usersEvents)
+    })
+    .catch((err) =>{
+        next(err);
+    })
 }

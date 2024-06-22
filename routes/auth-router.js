@@ -4,13 +4,14 @@ const authRouter = express.Router();
 // const bcrypt = require("bcrypt");
 // const db = require("../db/connection");
 const {ensureAuthenticated} = require('../middlewares/auth')
-const { register, login, logout, getUser, getAllUsers } = require('../controllers/user-controller')
+const { register, login, logout, getUser, getAllUsers, getUserSignedUpEvents } = require('../controllers/user-controller')
 
 
 authRouter.post('/register', register);
 // authRouter.post('/login', passport.authenticate('local'), login);
 authRouter.post('/logout', ensureAuthenticated, logout);
 authRouter.get('/profile', ensureAuthenticated, getUser);
+authRouter.get('/profile/events', ensureAuthenticated, getUserSignedUpEvents);
 authRouter.get('/users', getAllUsers);
 authRouter.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
