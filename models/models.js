@@ -454,30 +454,3 @@ exports.removeGuestFromEvent = async (event_id, user_id) => {
   return guestList.rows;
 };
 
-/*
-exports.fetchUserEvents = async (userId) => {
-  const guestExists = await db.query(
-    `SELECT guest_id FROM eventguests WHERE guest_id = $1;`, [userId]
-  );
-
-  if(guestExists.rows.length ===0) {
-    return Promise.reject({
-      status: 404,
-      message: "User has not signed up for any events.",
-    });
-  }
-
-  let eventsOfUserQuery = `SELECT 
-  eventguests.guest_id, eventguests.event_id,
-        events.event_name, 
-        events.description, 
-        events.start_t,
-        events.end_t,
-  FROM eventguests
-  JOIN events ON eventguests.event_id = events.event_id
-  WHERE eventguests.guest_id = $1;`
-  
-  const result = await db.query(eventsOfUserQuery, [userId] );
-  return result.rows;
-}
-  */

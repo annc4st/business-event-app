@@ -48,7 +48,6 @@ exports.findByUsername = async(username) => {
     }
 
     exports.fetchUserSignedUpEvents = async (userId) => {
-        console.log("models userid received >> ", userId)
         const userSignedUpExists = await db.query (
             `SELECT * FROM eventguests WHERE guest_id = $1;`, [userId]
         )

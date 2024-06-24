@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const localStrategy = require('passport-local').Strategy;
 const passport = require('passport');
-const expressSession = require('express-session'); // changed from cookie-session
+const expressSession = require('express-session');
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api-router'); 
 
