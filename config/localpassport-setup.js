@@ -8,10 +8,9 @@ const { findByUsername, findById } = require('../models/user-model');
 passport.use(new localStrategy( 
     async (username, password, cb) => {
         try{
-          console.log('Authenticating user:', username);  // Add this line
+  
             const user = await findByUsername(username)
             if(!user){
-      
                 return cb(null, false, {message: 'Incorrect username.'} )
             }
    

@@ -2,10 +2,10 @@ require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV ||
 
 const express = require('express');
 const cors = require('cors');
-
+const cookieSession = require('cookie-session');
 const localStrategy = require('passport-local').Strategy;
 const passport = require('passport');
-const expressSession = require('express-session');
+// const expressSession = require('express-session');
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api-router'); 
 
@@ -13,6 +13,14 @@ require('./config/localpassport-setup');
 
 
 const app = express();
+
+app.use(cookieSession({
+  name: 'session',
+  keys: [process.env.COOKIE_KEY],
+  maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  secure: process.env.NODE_ENV === 'production', 
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -47,11 +55,11 @@ app.use((req, res, next) => {
 // more middleware
 app.use(bodyParser.json());
 
-app.use(expressSession({
-    secret: process.env.COOKIE_KEY,
-    resave: false,
-    saveUninitialized: false
-}));
+// app.use(expressSession({
+//     secret: process.env.COOKIE_KEY,
+//     resave: false,
+//     saveUninitialized: false
+// }));
 
 
 // Passport middleware
