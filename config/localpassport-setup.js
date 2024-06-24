@@ -1,8 +1,6 @@
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-
-// const db = require('../db/connection');
 const { findByUsername, findById } = require('../models/user-model');
  
 
@@ -20,13 +18,13 @@ passport.use(new localStrategy(
             const isMatch = await bcrypt.compare(password, user.hashed_password);
 
             if (!isMatch) {
-              console.log('Password incorrect');  // Add this line
+              // console.log('Password incorrect');  // 
                 return cb(null, false, { message: 'Incorrect password.' });
             }
-            console.log('User authenticated successfully');  // Add this line
+            console.log('User authenticated successfully');  //  
             return cb(null, user);
         } catch (err) {
-          console.log('Error during authentication:', err);  // Add thi
+          // console.log('Error during authentication:', err);  //  
           return cb(err);
         }
 
@@ -38,7 +36,7 @@ passport.use(new localStrategy(
     
     passport.deserializeUser(async (id, done) => {
       try {
-        // console.log('Deserializing user with id:', id);  // Add this 
+        // console.log('Deserializing user with id:', id); 
         const user = await findById(id);
         done(null, user);
       } catch (error) {

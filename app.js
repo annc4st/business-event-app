@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.use(expressSession({
-    secret: 'super-secret',
+    secret: process.env.COOKIE_KEY,
     resave: false,
     saveUninitialized: false
 }));
