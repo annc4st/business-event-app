@@ -86,16 +86,8 @@ app.use((req, res, next) => {
   next();
 });
  
-
 // more middleware
 app.use(bodyParser.json());
-
-// app.use(expressSession({
-//     secret: process.env.COOKIE_KEY,
-//     resave: false,
-//     saveUninitialized: false
-// }));
-
 
 // Passport middleware
 app.use(passport.initialize());
@@ -104,7 +96,6 @@ app.use(passport.session());
 
 // Routes
 app.use('/api', apiRouter);
-
 
 app.all('/*',(request, response) =>{
     response.status(404).send({ message: 'path is not found'})  //to change to Bad Request

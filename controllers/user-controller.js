@@ -30,9 +30,11 @@ exports.logout = (req, res) => {
 exports.getUser = async (req, res) => {
 
     try {
-        const user = await findById(req.user.id);
+        const response = await findById(req.user.id);
+        console.log("user-controller ", response)
         res.json(user);
     } catch (error) {
+        console.error('Error processing request getUSer line36 : ', err);
         res.status(500).send({ error: 'Failed to fetch user' });
     }
 };
