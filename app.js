@@ -2,24 +2,50 @@ require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV ||
 
 const express = require('express');
 const cors = require('cors');
-const cookieSession = require('cookie-session');
+// const cookieSession = require('cookie-session');
 const localStrategy = require('passport-local').Strategy;
 const passport = require('passport');
-// const expressSession = require('express-session');
+const session = require('express-session');
+const RedisStore = require('connect-redis').default;
+const redis = require('redis');
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api-router'); 
 
 require('./config/localpassport-setup');
 
-
 const app = express();
 
-app.use(cookieSession({
-  name: 'session',
-  keys: [process.env.COOKIE_KEY],
-  maxAge: 24 * 60 * 60 * 1000, // 24 hours
-  secure: process.env.NODE_ENV === 'production', 
+if (process.env.NODE_ENV === 'production') {
+  
+  const redisClient = redis.createClient({
+    url: process.env.REDIS_URL,
+    legacyMode: true // Depending on the redis version
+  });
+
+  redisClient.connect().catch(console.error);
+
+app.use(session({
+  store: new RedisStore({ client: redisClient }),
+  secret: process.env.COOKIE_KEY,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true } //  
 }));
+} else {
+  app.use(session({
+    secret: process.env.COOKIE_KEY,
+    resave: false,
+    saveUninitialized: false
+  }));
+}
+
+
+// app.use(cookieSession({
+//   name: 'session',
+//   keys: [process.env.COOKIE_KEY],
+//   maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//   secure: process.env.NODE_ENV === 'production', 
+// }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
