@@ -29,7 +29,10 @@ app.use(session({
   secret: process.env.COOKIE_KEY,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: true } //  
+  cookie: { 
+    secure: true,
+    expires: 1000 * 60 * 60 *24 
+  } //  
 }));
 } else {
   app.use(session({
