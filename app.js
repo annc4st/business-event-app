@@ -15,15 +15,16 @@ require('./config/localpassport-setup');
 
 const app = express();
 
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL,
+  legacyMode: true // Depending on the redis version
+});
+
+redisClient.connect().catch(console.error);
+
+
 if (process.env.NODE_ENV === 'production') {
   
-  const redisClient = redis.createClient({
-    url: process.env.REDIS_URL,
-    legacyMode: true // Depending on the redis version
-  });
-
-  redisClient.connect().catch(console.error);
-
 app.use(session({
   store: new RedisStore({ client: redisClient }),
   secret: process.env.COOKIE_KEY,
