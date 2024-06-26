@@ -1,4 +1,5 @@
-require('dotenv').config({ path: `${__dirname}/../.env.${process.env.NODE_ENV || 'development'}` });
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
+
 
 const express = require('express');
 const cors = require('cors');
@@ -18,13 +19,13 @@ const app = express();
 const redisClient = createClient({
   password: process.env.REDIS_PASSWORD,
   socket: {
-    host: 'redis-17292.c72.eu-west-1-2.ec2.redns.redis-cloud.com',
-    port: 17292
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT
   }
 });
 
+redisClient.on('error', (err) => console.error('Redis Client Error', err))
 redisClient.connect().catch(console.error);
-
 
 if (process.env.NODE_ENV === 'production') {
   
