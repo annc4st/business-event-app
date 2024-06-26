@@ -7,7 +7,7 @@ const localStrategy = require('passport-local').Strategy;
 const passport = require('passport');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
-const redis = require('redis');
+const { createClient } = require('redis');
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api-router'); 
 
@@ -15,9 +15,12 @@ require('./config/localpassport-setup');
 
 const app = express();
 
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL,
-  legacyMode: true // Depending on the redis version
+const redisClient = createClient({
+  password: process.env.REDIS_PASSWORD,
+  socket: {
+    host: 'redis-17292.c72.eu-west-1-2.ec2.redns.redis-cloud.com',
+    port: 17292
+  }
 });
 
 redisClient.connect().catch(console.error);
