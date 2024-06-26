@@ -31,8 +31,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: { 
     secure: true,
-    expires: 1000 * 60 * 60 *24 
-  } //  
+    expires: 1000 * 60 * 60 *24,
+    sameSite: 'none'
+  } //
 }));
 } else {
   app.use(session({
