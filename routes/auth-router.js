@@ -8,7 +8,7 @@ const { register, login, logout, getUser, getAllUsers, getUserSignedUpEvents } =
 authRouter.post('/register', register);
 
 authRouter.post('/logout', logout); //ensureAuthenticated, 
-authRouter.get('/profile', getUser);
+authRouter.get('/profile', ensureAuthenticated, getUser);
 authRouter.get('/profile/events', getUserSignedUpEvents);
 authRouter.get('/users', getAllUsers);
 authRouter.post('/login', (req, res, next) => {

@@ -28,6 +28,7 @@ exports.logout = (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
+    console.log("request from backend ", req)
 
     try {
         const response = await findById(req.user.id);
