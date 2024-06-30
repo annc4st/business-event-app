@@ -21,21 +21,28 @@ exports.login = (req, res) => {
   });
 };
 
-exports.logout = (req, res) => {
-    req.logout();
-    res.json({ message: 'Logged out successfully'})
- 
+exports.logout = (req, res, next) => {
+    req.logout(function(err) {
+        if (err) {
+            return next(err);
+        }
+        req.session.destroy(function(err) {
+            if (err) {
+                return next(err);
+            }
+            res.clearCookie('connect.sid'); // Ensure you clear the session cookie
+            res.status(200).json({ message: 'Logged out successfully' });
+        });
+    });
 };
 
 exports.getUser = async (req, res) => {
-    console.log("request from backend ", req)
-
+    
     try {
         const response = await findById(req.user.id);
-        console.log("user-controller ", response)
-        res.json(user);
+        res.status(200).send(response);
     } catch (error) {
-        console.error('Error processing request getUSer line36 : ', err);
+        console.error('Error processing request getUSer line36 : ', error);
         res.status(500).send({ error: 'Failed to fetch user' });
     }
 };
