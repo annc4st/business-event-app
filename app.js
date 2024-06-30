@@ -35,7 +35,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: { 
-    secure: true,
+    // secure: true,
     expires: 1000 * 60 * 60 *24,
     sameSite: 'none'
   } //
@@ -44,7 +44,12 @@ app.use(session({
   app.use(session({
     secret: process.env.COOKIE_KEY,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { 
+
+    expires: 1000 * 60 * 60 *24,
+    }
+
   }));
 }
 

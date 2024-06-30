@@ -9,7 +9,7 @@ authRouter.post('/register', register);
 
 authRouter.post('/logout', ensureAuthenticated, logout); //ensureAuthenticated, 
 authRouter.get('/profile', ensureAuthenticated, getUser);
-authRouter.get('/profile/events', getUserSignedUpEvents);
+authRouter.get('/profile/events', ensureAuthenticated, getUserSignedUpEvents);
 authRouter.get('/users', getAllUsers);
 authRouter.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
