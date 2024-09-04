@@ -1,7 +1,8 @@
 const format = require('pg-format');
 const db = require('../connection');
-const convertToUTC = require('../../models/util_func');
+const {convertToUTC} = require('../../models/util_func');
 const bcrypt = require('bcrypt');
+
 
 const seed = async ({ eventData, categoryData, locationData, userData }) => {
     try {

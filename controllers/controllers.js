@@ -82,7 +82,7 @@ exports.getEvents = (req, res, next) => {
         res.status(200).send(events);
     })
     .catch((err) =>{
-        console.error('Error getting events:', err);
+        console.log('Error getting events:', err);
         next(err);
     });
 }
@@ -114,7 +114,7 @@ exports.postEvent = (req, res, next) => {
         res.status(201).send({event})
     })
     .catch((error) => {
-        // console.log("Controller - Error posting event:", error);
+        console.log("Controller - Error posting event:", error);
         next(error);
       })
 };

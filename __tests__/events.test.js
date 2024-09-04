@@ -1,7 +1,6 @@
-const app = require("../app");
-const db = require("../db/connection");
-// const { DateTime } = require('luxon');
-const convertToUTC = require('../models/util_func')
+const app = require("../app.js");
+const db = require("../db/connection.js");
+const {convertToUTC} = require('../models/util_func.js')
 
 const request = require("supertest");
 const seed = require("../db/seeds/seed.js");
@@ -167,16 +166,16 @@ describe('POST /api/events', () => {
       event_name: "testing event 6  Triathlon race",
       category: "races",
       description: "An easy description of testing event 6",
-      startdate: '2023-07-25',
+      startdate: '2025-07-25',
       starttime: '10:00:00',
-      enddate: '2023-07-25',
+      enddate: '2025-07-25',
       endtime: '12:00:00',
       ticket_price: 10.00,
       location: 3,
       image_url: "",
     }
     return request(app)
-      .post(`/api/events`)
+      .post(`/api/events/`)
       .send(newEvent)
       .expect(201)
       .then((response) => {
@@ -187,7 +186,7 @@ describe('POST /api/events', () => {
         // Convert received UTC date to local date for comparison
         const receivedStartTime = convertToUTC(newEvent.startdate, newEvent.starttime);
         // console.log(receivedStartTime)
-        expect(receivedStartTime).toEqual('2023-07-25T10:00:00.000Z');
+        expect(receivedStartTime).toEqual('2025-07-25T10:00:00.000Z');
       });
   });
 

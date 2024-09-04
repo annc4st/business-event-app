@@ -1,12 +1,9 @@
-const fs = require("fs/promises");
-const jwt = require("jsonwebtoken");
+// const fs = require("fs/promises");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const { createToken}  = require('../models/util_func')
 
 
-const createToken = (id) => {
-  return jwt.sign({ id }, process.env.SECRET, { expiresIn: "3h" });
-};
 
 exports.register = async (req, res) => {
   const { username, password, email } = req.body;
@@ -27,7 +24,7 @@ exports.register = async (req, res) => {
 
     res.status(201).json({ username, email, token });
   } catch (error) {
-    console.log("error at registerign user ", error.message);
+    console.log("error at registering user ", error.message);
     res.status(400).json({ error: error.message });
   }
 };

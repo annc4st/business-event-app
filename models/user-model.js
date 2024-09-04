@@ -1,27 +1,4 @@
 const db = require('../db/connection');
-// const bcrypt = require('bcrypt');
-// const isEmail = require('validator/lib/isEmail');
-
-// exports.findByUsername = async(username) => {
-//     try {
-            
-//     const userExists = await db.query('SELECT * FROM users WHERE username = $1', [username]);
-//     if(userExists.rows.length ===0) {
-//         return Promise.reject({ status: 404, message: "User does not exist" });
-//     }
-//     return userExists.rows[0];
-// } catch (error) {
-//     throw new Error (error.message)
-// }
-// }
-
-//     exports.findById = async(id) => {
-//         const userExists = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-//         if(userExists.rows.length ===0) {
-//             return Promise.reject({ status: 404, message: "User does not exist" });
-//         }
-//         return userExists.rows[0];
-//     }
 
 
     exports.fetchUserSignedUpEvents = async (userId) => {
@@ -47,4 +24,28 @@ const db = require('../db/connection');
         return result.rows;
     }
  
+
+
+
+// exports.findByUsername = async(username) => {
+//     try {
+            
+//     const userExists = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+//     if(userExists.rows.length ===0) {
+//         return Promise.reject({ status: 404, message: "User does not exist" });
+//     }
+//     return userExists.rows[0];
+// } catch (error) {
+//     throw new Error (error.message)
+// }
+// }
+
+//     exports.findById = async(id) => {
+//         const userExists = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+//         if(userExists.rows.length ===0) {
+//             return Promise.reject({ status: 404, message: "User does not exist" });
+//         }
+//         return userExists.rows[0];
+//     }
+
  

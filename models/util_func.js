@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 
 const convertToUTC = (date, time) => {
     // const dateTime = new Date(new Date(`${date}T${time}Z`).getTime() - new Date(`${date}T${time}Z`).getTimezoneOffset() *60000).toISOString();
@@ -8,6 +9,10 @@ const convertToUTC = (date, time) => {
     return utcDateTime;
   }
 
+  const createToken = (id) => {
+    return jwt.sign({ id }, process.env.SECRET, { expiresIn: "3h" });
+  };
 
-  module.exports = { convertToUTC }
+
+  module.exports = { convertToUTC, createToken }
  
