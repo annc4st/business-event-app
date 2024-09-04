@@ -1,9 +1,11 @@
 const express = require('express');
 const profileRouter = express.Router();
-const {ensureAuthenticated } = require('../middlewares/auth');
+const requireAuth  = require('../middlewares/authMiddleware');
+const {getMyEvents} = require('../controllers/controllers')
 
-profileRouter.get('/', ensureAuthenticated, (req, res) => {
-    res.send(req.user);
-})
+// Middleware for authentication
+// profileRouter.use(requireAuth);
+
+profileRouter.get('/', requireAuth, getMyEvents);
 
 module.exports = profileRouter;

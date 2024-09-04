@@ -1,3 +1,4 @@
+
 const convertToUTC = (date, time) => {
     // const dateTime = new Date(new Date(`${date}T${time}Z`).getTime() - new Date(`${date}T${time}Z`).getTimezoneOffset() *60000).toISOString();
     // return dateTime;
@@ -7,5 +8,6 @@ const convertToUTC = (date, time) => {
     return utcDateTime;
   }
 
-  module.exports = convertToUTC;
+
+  module.exports = { convertToUTC }
  
