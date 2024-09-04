@@ -18,6 +18,10 @@ const {
 
         } = require("../models/models.js");
 
+    const { fetchUserSignedUpEvents } = require('../models/user-model.js')
+
+
+
 exports.getCategories = (req, res, next) => {
     fetchCategories()
     .then((categories) =>{
@@ -78,7 +82,7 @@ exports.getEvents = (req, res, next) => {
         res.status(200).send(events);
     })
     .catch((err) =>{
-        console.error('Error getting events:', err);
+        console.log('Error getting events:', err);
         next(err);
     });
 }
@@ -110,7 +114,7 @@ exports.postEvent = (req, res, next) => {
         res.status(201).send({event})
     })
     .catch((error) => {
-        // console.log("Controller - Error posting event:", error);
+        console.log("Controller - Error posting event:", error);
         next(error);
       })
 };
@@ -230,3 +234,20 @@ exports.deleteEventGuest = (req, res, next) => {
     });
 }
 
+// show events user signed up for 
+
+exports.getMyEvents = async (req, res ) => {
+    console.log('getMyEvents controller hit'); // Add this line
+    // if (!req.user || !req.user.id) {
+    //     return res.status(401).json({ error: "User not authenticated" });
+    //   }
+console.log("req user >> ", req.user)
+      try {
+        const userId = req.user.id;
+        const events = await fetchUserSignedUpEvents(userId)
+        res.status(200).json(events)
+      } catch (error) {
+        console.log(error)
+        res.status(400).json({ error: error.message});
+      }
+}

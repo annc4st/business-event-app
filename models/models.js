@@ -1,6 +1,6 @@
 const db = require("../db/connection.js");
 const format = require("pg-format");
-const convertToUTC = require("./util_func");
+const {convertToUTC} = require("./util_func");
 
 exports.fetchCategories = () => {
   return db.query(`SELECT * FROM categories;`).then(({ rows }) => {
@@ -206,8 +206,7 @@ exports.insertEvent = async (newEvent) => {
 
   if (location) {
     const locationExists = await db.query(
-      `
-          SELECT location_id FROM locations WHERE location_id = $1;`,
+      `SELECT location_id FROM locations WHERE location_id = $1;`,
       [location]
     );
 
@@ -243,6 +242,7 @@ exports.insertEvent = async (newEvent) => {
     const result = await db.query(query, values);
     return result.rows[0];
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
