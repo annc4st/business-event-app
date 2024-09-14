@@ -1,11 +1,13 @@
 const format = require('pg-format');
-const db = process.env.NODE_ENV === 'production' ? require('../sqlConnection') : require('../connection');
+const db = require('../connection');
 const {convertToUTC} = require('../../models/util_func');
 const bcrypt = require('bcrypt');
 
 
 const seed = async ({ eventData, categoryData, locationData, userData }) => {
     try {
+
+//dev
         await db.query(`DROP TABLE IF EXISTS eventguests;`);
         await db.query(`DROP TABLE IF EXISTS events;`);
         await db.query(`DROP TABLE IF EXISTS categories;`);
@@ -117,9 +119,11 @@ const seed = async ({ eventData, categoryData, locationData, userData }) => {
             })
         );
         await db.query(insertEventsQueryStr);
+
     } catch (err) {
-        console.error('Error seeding database:', err);
-    }
+            console.error('Error seeding database:', err);
+        }
+
 };
 
 module.exports = seed;
