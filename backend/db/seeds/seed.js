@@ -1,5 +1,5 @@
 const format = require('pg-format');
-const db = require('../connection');
+const db = process.env.NODE_ENV === 'production' ? require('./sqlConnection') : require('./connection');
 const {convertToUTC} = require('../../models/util_func');
 const bcrypt = require('bcrypt');
 

@@ -18,8 +18,11 @@ const config = {
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT || 5432, // Use default port if not specified
-  ssl: process.env.NODE_ENV === 'production' ? 'require' : false, // Enable SSL in production
-  // ssl: 'require',
+
+}
+
+if (process.env.NODE_ENV === 'production') {
+  config.ssl = { rejectUnauthorized: false };
 }
 
 module.exports = new Pool(config);
