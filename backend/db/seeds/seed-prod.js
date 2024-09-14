@@ -1,21 +1,22 @@
 const postgres = require('postgres');
 const { convertToUTC } = require('../../models/util_func');
 const bcrypt = require('bcrypt');
+const sql = require('../sqlConnection');
 require('dotenv').config();
 
-let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
+// let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
 
-const sql = postgres({
-  host: PGHOST,
-  database: PGDATABASE,
-  username: PGUSER,
-  password: PGPASSWORD,
-  port: 5432,
-  ssl: 'require',
-  connection: {
-    options: `project=${ENDPOINT_ID}`,
-  },
-});
+// const sql = postgres({
+//   host: PGHOST,
+//   database: PGDATABASE,
+//   username: PGUSER,
+//   password: PGPASSWORD,
+//   port: 5432,
+//   ssl: 'require',
+//   connection: {
+//     options: `project=${ENDPOINT_ID}`,
+//   },
+// });
 
 const seedProduction = async ({ eventData, categoryData, locationData, userData }) => {
   try {
