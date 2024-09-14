@@ -1,24 +1,15 @@
-
-
 const { Pool } = require('pg');
-
-const ENV = process.env.NODE_ENV || 'development';
 
 
 require('dotenv').config({
-  path: `${__dirname}/../.env.${ENV}`,
+  path: `${__dirname}/../.env.${process.env.NODE_ENV || 'development'}`,
 });
 
 // Check for required environment variables
 if (!process.env.PGDATABASE || !process.env.PGUSER || !process.env.PGPASSWORD || !process.env.PGHOST) {
   throw new Error('Required environment variables are not set');
 }
-
-// const config = {};
-// if (ENV === 'production') {
-//   config.connectionString = process.env.DATABASE_URL;
-//   config.max = 2;
-// }
+ 
 
 //Configure the postgresql client
 const config = {
