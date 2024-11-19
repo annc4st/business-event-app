@@ -1,0 +1,109 @@
+/* ViewEvent */
+
+.content-view-event {
+    margin: 1em;
+    background-color: var(--bg-card);
+    border-radius: 5px;
+
+}
+.view-event {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    margin: 1em;
+  }
+
+  .single-event-img img{
+    max-width: 100%;
+  height: auto;
+    grid-column: 1/9;
+    
+  }
+  
+  .ve{
+    grid-column: 1/9;
+  }
+  
+  .border-around {
+    border: 1px solid var(--border);
+  }
+  .event-category {
+    grid-column: 1/9;
+  }
+  .two-cols{
+    grid-column: 1/9;
+  }
+  
+  .first-col {
+    grid-column: 1/9;
+  }
+  .second-col {
+    grid-column: 1/9;
+  }
+   
+  .title {
+    text-align: center;
+    margin-top: 1em;
+  }
+
+  .ve-el {
+    margin-top: 1em;
+  }
+.bolder-subtitle {
+    margin-bottom: 0;
+}
+  
+  .date-time  {
+    text-align: center;
+    font-size: 16px;
+  }
+   
+  .ticket-price {
+    text-align: center;
+  }
+  .ticket-price p{
+    color: var(--btn-color);
+    font-weight: 600;
+  }
+ .action-btns {
+    margin: 1em auto;
+
+ }
+ .central-position {
+    text-align: center;
+ }
+ .signUp {
+    background-color: var(--btn-color);
+
+ }
+
+ .addTo-calendar {
+    margin-bottom: 1em;
+ }
+  
+  /* small tablet styles */
+  @media screen and (min-width: 620px){
+
+    .two-cols{
+        grid-column: 1/9;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1em;
+    }
+    .first-col {
+        grid-column: 1/2;
+    }
+    .second-col {
+        grid-column: 2/3;
+        justify-content: center;
+    }   
+  }
+  
+  /* laptop */
+  @media screen and (min-width: 960px){
+  
+  }
+  
+  /* bigger screens */
+  @media screen and (min-width: 1200px){
+    
+  }

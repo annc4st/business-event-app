@@ -1,6 +1,7 @@
 // const fs = require("fs/promises");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+
 const { createToken}  = require('../models/util_func')
 
 
@@ -50,7 +51,12 @@ exports.login = async (req, res) => {
 
     const token = createToken(user.id);
     // Respond with user details and token
-    res.status(200).json({ username: user.username, userID: user.id, token });
+    res.status(200).json({ 
+      username: user.username, 
+      userID: user.id, 
+      email: user.email, // Include email here
+      role: user.role,   // Include role here
+      token });
   } catch (error) {
     console.log("Login error:", error.message);
     res.status(400).json({ error: error.message });

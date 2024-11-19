@@ -384,16 +384,15 @@ exports.updateGuestList = async (event_id, user_id) => {
     `SELECT * FROM eventguests WHERE event_id = $1 AND guest_id = $2;`,
     [event_id, user_id]
   );
-  if (guestAlreadyExists.rows.length != 0) {
+  if (guestAlreadyExists.rows.length > 0) {
     return Promise.reject({
-      status: 401,
+      status: 409,
       message: "This user has already signed up for the event.",
     });
   }
-
+ // Insert guest into the event
   await db.query(
-    `
-    INSERT INTO eventguests(event_id, guest_id)
+    `INSERT INTO eventguests(event_id, guest_id)
     VALUES($1, $2)
     ON CONFLICT DO NOTHING;`,
     [event_id, user_id]
@@ -404,7 +403,7 @@ exports.updateGuestList = async (event_id, user_id) => {
     [event_id]
   );
 
-  return guestList.rows[0];
+  return guestList.rows;
 };
 
 exports.removeGuestFromEvent = async (event_id, user_id) => {

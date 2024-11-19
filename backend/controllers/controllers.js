@@ -122,7 +122,6 @@ exports.postEvent = (req, res, next) => {
 exports.deleteEvent = (req, res, next) => {
     const {event_id} = req.params;
     removeEvent(event_id).then(() =>{
-        // console.log("log controller line 118>> ",response)
         res.status(204).send();
     })
     .catch((err) => {
@@ -207,18 +206,27 @@ exports.getEventGuests = (req, res, next) => {
 }
 
 // update list of attendees on event
-exports.patchEventGuests = (req, res, next) => {
+exports.patchEventGuests = async (req, res, next) => {
     const event_id = req.params.event_id;
-    const user_id = req.body.id;
 
-    return updateGuestList(event_id, user_id)
-    .then((guestList) => {
-        res.status(200).send({ guestList });
-    })
-    .catch((error) => {
+    try {
+         // `requireAuth` has already verified the token and attached the user to `req.user`
+        const user_id = req.user.id;
+        if (!event_id || !user_id) {
+            return res.status(400).json({ error: 'Event ID and User ID are required.' });
+        }
+
+        const guestList = await updateGuestList(event_id, user_id);
+        res.status(200).json({guestList})
+    }  catch(error) {
         console.error('Error updating guestList:', error);
-        next(error);
-        })
+        // Customize error messages based on the error type
+        if (error.status) {
+            res.status(error.status).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 };
 
 exports.deleteEventGuest = (req, res, next) => {
@@ -235,19 +243,17 @@ exports.deleteEventGuest = (req, res, next) => {
 }
 
 // show events user signed up for 
-
 exports.getMyEvents = async (req, res ) => {
-    console.log('getMyEvents controller hit'); // Add this line
-    // if (!req.user || !req.user.id) {
-    //     return res.status(401).json({ error: "User not authenticated" });
-    //   }
-console.log("req user >> ", req.user)
-      try {
-        const userId = req.user.id;
-        const events = await fetchUserSignedUpEvents(userId)
-        res.status(200).json(events)
+    const user_id = req.user.id;
+
+    try {
+        const events = await fetchUserSignedUpEvents(user_id);
+        res.status(200).json(events);
       } catch (error) {
-        console.log(error)
-        res.status(400).json({ error: error.message});
+        console.error('Error getting events:', error);
+        if (error.status) {
+            return res.status(error.status).json({ error: error.message });
+        }
+        res.status(500).json({ error: 'Internal Server Error' });
       }
-}
+    };

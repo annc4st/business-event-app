@@ -1,0 +1,37 @@
+
+
+.page_404 {
+    margin: auto;
+    margin-top: 1em;
+    max-width: 300px;
+    }
+
+.ev-notf, .admin-part {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em; 
+  }
+  
+  .fouro-four-title {
+    border: solid 1px var(--border);
+    border-radius: 8px;
+    background-color: var(--bg-card);
+  }
+  .fouro-four-title h1{
+    text-align: center;
+  }
+
+  .ev-notf h3, p {
+    font-size: 1.2em;
+    font-weight: 200;
+    text-align: center;
+    
+    margin: 8px auto;
+  }
+ 
+  @media screen and (min-width: 620px){
+    .page_404 {
+        
+        max-width: 500px;
+        }
+    }

@@ -1,0 +1,35 @@
+.hero-section {
+    display: none;
+}
+
+  
+  /* Media query to switch images based on screen width */
+  @media (min-width: 620px) {
+    .hero-section {
+        display: block;
+    }
+ 
+    .hero {
+        position: relative;
+        text-align: center;
+        color: white;
+      }
+
+      .hero-image {
+        width: 100%;
+        height: auto;
+      }
+      
+      .hero-image-large {
+        display: block;
+      }
+    
+      .hero-content {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+    
+  }
+  

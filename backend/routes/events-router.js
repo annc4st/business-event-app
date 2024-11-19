@@ -1,15 +1,16 @@
 const express = require('express');
 const eventsRouter = express.Router();
+const requireAuth = require('../middlewares/authMiddleware')
 const {
     getEvents, getEventById, postEvent, 
     deleteEvent, patchEventGuests,
-getEventGuests, deleteEventGuest
+getEventGuests, deleteEventGuest, getMyEvents
 } = require('../controllers/controllers');
 
 
 eventsRouter.route('/')
 .get(getEvents)
-.post(postEvent);
+.post(postEvent); // ? requireAuth
 
 eventsRouter.route('/:event_id')
 .get(getEventById)
@@ -19,9 +20,10 @@ eventsRouter.route('/:event_id')
 
 eventsRouter.route('/:event_id/guests')
 .get(getEventGuests)
-.patch(patchEventGuests)
-.delete(deleteEventGuest); ///adding guest
- 
+.patch(requireAuth, patchEventGuests)
+.delete(requireAuth, deleteEventGuest); 
+
+
 
 
 module.exports = eventsRouter;
