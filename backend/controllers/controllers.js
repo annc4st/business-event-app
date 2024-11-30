@@ -126,15 +126,6 @@ exports.postEvent = (upload.single('image'), async(req, res, next) => {
     } catch (error) {
         next(error);
     }
-
-        // return insertEvent(newEvent)
-    // .then((event) => {
-    //     res.status(201).send({event})
-    // })
-    // .catch((error) => {
-    //     console.log("Controller - Error posting event:", error);
-    //     next(error);
-    //   })
 });
 
 exports.deleteEvent = (req, res, next) => {

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
-import {Route, Routes, Link} from "react-router-dom";
-// import {UserProvider } from "./contexts/UserContext";
+import { Route, Routes} from "react-router-dom";
 
 import EventsList from "./components/EventsList";
 import ViewEvent from "./components/ViewEvent";
@@ -14,18 +13,18 @@ import NotFound from "./components/errors/NotFound";
 import Login from "./components/Login";
 import Hero from './components/Hero';
 import Signup from "./components/Signup";
+import AdminEvents from "./components/AdminEvents";
+import AdminRoute from "./components/AdminRoute";
+
 
 
 function App() {
   return (
     <>
-      {/* <UserProvider> */}
-        <Header />
+      <Header />
         <Hero />
-        
-        
           <Routes>
-            <Route path = "/login" element={<Login />} />
+            <Route path ="/login" element={<Login />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/" element={<EventsList />} />
             <Route path="/:category" element={<EventsList />} />
@@ -34,11 +33,10 @@ function App() {
             <Route path ="/locations" element={<LocationsList />}/>
             <Route path="/create-location" element={<CreateLocation />} /> 
             <Route path="/create-event" element={<CreateEvent />} />
+            <Route path="/admin" element={ <AdminRoute><AdminEvents /> </AdminRoute>} />
             <Route component={NotFound} />
  
-          </Routes>
-    
-      {/* </UserProvider> */}
+          </Routes>      
     </>
   );
 }

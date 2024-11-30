@@ -9,7 +9,7 @@ import FileUpload from "./FileUpload";
 const Profile = () => {
   const { user } = useAuthContext();
 
-  console.log("Wprint user role>> ",  user);
+  console.log("Print user >> ",  user);
 
   return (
     <div className="profile-page">
@@ -20,16 +20,18 @@ const Profile = () => {
         </>
       )}
 
-      {user && user.role === "admin" && (
+      {user && user.username === "admin" && (
         <div className="admin-section">
-          <p>If user is admin you can see this</p>
+          <p><Link to={"/admin"}>Manage events </Link>
+          </p>
           <p>
             <Link to={"/create-event"}>Create new event</Link>
           </p>
+          <div className="events-table">
+
+          </div>
         </div>
       )}
-
-      {/* <FileUpload /> */}
 
     </div>
   );

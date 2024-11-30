@@ -18,7 +18,11 @@ const UserEvents = ({user}) => {
           setLoading(false);
             })
            .catch ((error) => {
-            setError("Failed to fetch events. Please try again later.");
+            if (error.response?.status === 404) {
+                setError("User has not signed up for any events."); // Custom error message for 404 case
+              } else {
+                setError("Failed to fetch events. Please try again later.");
+              }
            setLoading(false);
             });
         } else {

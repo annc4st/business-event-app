@@ -32,6 +32,17 @@ export const getEvent = async (event_id) => {
     }
 };
 
+// delete event
+export const deleteEvent = async (event_id) => {
+    try {
+        const response = await eventsApi.delete(`/events/${event_id}`);
+        return response.data;
+    } catch(error) {
+        console.error('Error deleting event:', error); // Log error for debugging
+        throw new Error('Failed to delete the event. Please try again.'); // Provide a user-friendly error
+    }
+}
+
 export const postEvent = async (newEvent) => {
     try{
         const response = await eventsApi.post(`/events`, newEvent);
@@ -77,6 +88,7 @@ export const addGuest = (event_id, userId, token) => {
         throw error;
       });
 }
+
 
 //remove user from guestlist by admin
 export const removeGuest = (event_id, userId) => {
