@@ -32,6 +32,17 @@ export const getEvent = async (event_id) => {
     }
 };
 
+// delete event
+export const deleteEvent = async (event_id) => {
+    try {
+        const response = await eventsApi.delete(`/events/${event_id}`);
+        return response.data;
+    } catch(error) {
+        console.error('Error deleting event:', error); // Log error for debugging
+        throw new Error('Failed to delete the event. Please try again.'); // Provide a user-friendly error
+    }
+}
+
 export const postEvent = async (newEvent) => {
     try{
         const response = await eventsApi.post(`/events`, newEvent);
@@ -40,6 +51,25 @@ export const postEvent = async (newEvent) => {
         throw error;
     }
 }
+
+// image upload
+export const imageUpload = async (file, setFieldValue) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+        const response = await eventsApi.post(
+            `/uploads/upload`,
+            formData, {
+                headers: { 'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data.imagePath; // Return the image path 
+            
+    } catch (error){
+        console.error('Error uploading image:', error);
+        setError('Image upload failed');
+    }
+};
 
 //add user to guestlist for event when user signs up
 export const addGuest = (event_id, userId, token) => {
@@ -58,6 +88,7 @@ export const addGuest = (event_id, userId, token) => {
         throw error;
       });
 }
+
 
 //remove user from guestlist by admin
 export const removeGuest = (event_id, userId) => {

@@ -1,5 +1,8 @@
 const fs = require("fs/promises");
 const path = require("path");
+const upload = require('../middlewares/upload');
+
+
 
 const {
     fetchCategories,
@@ -98,26 +101,32 @@ exports.getEventById = (req, res, next) => {
     });
 };
 
-exports.postEvent = (req, res, next) => {
-    const newEvent = req.body;
-    if(!newEvent.event_name || 
-        !newEvent.category || !newEvent.description || !newEvent.startdate ||
-        !newEvent.starttime || 
-        !newEvent.enddate ||
-        !newEvent.endtime ||
-        !newEvent.ticket_price || !newEvent.location 
-        ){
+exports.postEvent = (upload.single('image'), async(req, res, next) => {
+    try{
+        
+        const newEvent = req.body;
+
+        // If an image is uploaded, use its filename
+        if (req.file) {
+            newEvent.image_url = `/uploads/${req.file.filename}`;
+        }
+
+        if(!newEvent.event_name || 
+            !newEvent.category || !newEvent.description || !newEvent.startdate ||
+            !newEvent.starttime || 
+            !newEvent.enddate ||
+            !newEvent.endtime ||
+            !newEvent.ticket_price || !newEvent.location 
+            ){
             return res.status(422).send({ message: 'Event details (name, category, description, startdate, starttime, enddate, endtime, ticket_price, location) cannot be empty.' });
         }
-    return insertEvent(newEvent)
-    .then((event) => {
-        res.status(201).send({event})
-    })
-    .catch((error) => {
-        console.log("Controller - Error posting event:", error);
+
+        const createdEvent = await insertEvent(newEvent);
+        res.status(201).json(createdEvent);
+    } catch (error) {
         next(error);
-      })
-};
+    }
+});
 
 exports.deleteEvent = (req, res, next) => {
     const {event_id} = req.params;

@@ -1,6 +1,4 @@
 import React, { useState, useContext } from "react";
-// import { UserContext} from "../contexts/UserContext";
-// import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from '../hooks/useAuthContext'
 import { Link, useNavigate } from "react-router-dom";
 import LogoutBtn from "./LogoutBtn";
@@ -8,15 +6,10 @@ import LogoutBtn from "./LogoutBtn";
 import "./Header.css";
 
 const Header = () => {
-  // const context = useContext(UserContext);
+
   const navigate = useNavigate();
   const { user } = useAuthContext();
 
-  // if (!context) {
-  //   //// Context is undefined, return null or a fallback UI
-  //   return null;
-  // }
-  // const { user, loading, isLogged} = context;
 
   return (
     <header className="header">

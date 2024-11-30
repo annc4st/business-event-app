@@ -5,9 +5,9 @@
 
   --text: #FFFFFF;
   --bg-body:  #16181D; 
-  /* // #161616; */
+  /*  #161616; */
   --bg-card: #2e2b2b;
-  --btn-color:  #ffa500;
+  --btn-color:  #ffa500; /* orange */
   --border: #A6CCFF;
   --active-color: #A6CCFF;
 }

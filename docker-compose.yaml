@@ -1,0 +1,19 @@
+
+services:
+  backend:
+    build: ./backend
+    container_name: api_c
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./backend:/app
+     
+    environment:
+      NODE_ENV: development
+      PGHOST: host.docker.internal
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: events
+    env_file:
+      - ./backend/.env.development

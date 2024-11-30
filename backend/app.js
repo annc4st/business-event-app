@@ -1,7 +1,7 @@
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
-
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const { connectDB } = require('./db/database-seq');
 const User = require('./models/User');
@@ -10,7 +10,8 @@ const apiRouter = require('./routes/api-router');
 
 const app = express();
 
-
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -25,7 +26,7 @@ app.use(cors({
 }
 ));
 
-app.use(express.json());
+
 // middleware to set headers explicitly (optional, for completeness)
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin);
