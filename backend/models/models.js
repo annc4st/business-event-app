@@ -170,6 +170,8 @@ exports.fetchEventById = async (id) => {
   return event;
 };
 
+
+// CREATE new event
 exports.insertEvent = async (newEvent) => {
   let {
     event_name,
@@ -191,8 +193,7 @@ exports.insertEvent = async (newEvent) => {
 
   if (category) {
     const categoryExists = await db.query(
-      `
-          SELECT slug FROM categories WHERE slug = $1;`,
+      `SELECT slug FROM categories WHERE slug = $1;`,
       [category]
     );
 
@@ -223,9 +224,9 @@ exports.insertEvent = async (newEvent) => {
   const start_t = convertToUTC(startdate, starttime);
   const end_t = convertToUTC(enddate, endtime);
   const query = `
-    INSERT INTO events (event_name, category, description, start_t, end_t, ticket_price, location, image_url)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;
-  `;
+      INSERT INTO events (event_name, category, description, start_t, end_t, ticket_price, location, image_url)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;
+    `;
 
   const values = [
     event_name,

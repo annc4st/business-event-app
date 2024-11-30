@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import "./errors/errors.css";
 import UserEvents from "./UserEvents";
 
+import FileUpload from "./FileUpload";
+
 const Profile = () => {
   const { user } = useAuthContext();
 
@@ -26,6 +28,9 @@ const Profile = () => {
           </p>
         </div>
       )}
+
+      {/* <FileUpload /> */}
+
     </div>
   );
 };

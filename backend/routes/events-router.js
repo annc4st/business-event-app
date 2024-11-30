@@ -6,6 +6,7 @@ const {
     deleteEvent, patchEventGuests,
 getEventGuests, deleteEventGuest, getMyEvents
 } = require('../controllers/controllers');
+ 
 
 
 eventsRouter.route('/')

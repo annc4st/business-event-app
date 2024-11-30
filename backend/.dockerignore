@@ -1,0 +1,8 @@
+node_modules/
+__tests__/
+play.js
+# Environment files (shouldn't be hardcoded into the image)
+.env*
+# Docker-specific files
+Dockerfile
+docker-compose*.yaml

@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import { useAuthContext } from '../hooks/useAuthContext'
 import { postEvent, getCategories, getLocations } from '../api';
 import TimePickerField from './TimePickerField';
+import axios from 'axios';
+
  
 
 const CreateEvent= () => {
@@ -14,6 +16,7 @@ const CreateEvent= () => {
     const [categories, setCategories] = useState([]);
     const [locations, setLocations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchCategoriesAndLocations = async () => {
@@ -41,15 +44,38 @@ const CreateEvent= () => {
     enddate: Yup.date().required('End date is required'),
     endtime: Yup.string().required('End time is required').matches(/^\d{2}:\d{2}:\d{2}$/, 'Invalid time format'),
     ticket_price: Yup.number().min(0, 'Ticket price must be a positive number').required('Ticket price is required'),
-    image_url: Yup.string().url('Invalid URL'),
+    // image_url: Yup.string().url('Invalid URL'),
     category: Yup.string().required('Category is required'),
     location: Yup.string().required('Location is required'),
   });
 
+  //manage file upload
+  const handleImageUpload = async (file, setFieldValue) => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await axios.post('http://localhost:9000/api/uploads/upload', 
+        formData, {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+    });
+    // setFieldValue(`File Uploaded successfully: ${response.data.filePath}`);
+    setFieldValue('image_url', response.data.imagePath); // Use the public URL returned by the backend
+  } catch (error){
+    console.error('Error uploading image:', error);
+      setError('Image upload failed');
+  }
+  };
+
+
   const handleSubmit = (values, { setSubmitting} ) => {
     if(user.username==="admin"){
-        postEvent(values).then((response) => {
-            // console.log('Event created:', response.data);
+      const newEvent = { ...values }; // Ensure image_url is part of values
+        postEvent(values)
+        .then((response) => {
+            console.log('Event created:', response);
           navigate('/');
         })
         .catch((error) => {
@@ -91,7 +117,7 @@ const CreateEvent= () => {
                 onSubmit={handleSubmit}
             >
 
-            {({ isSubmitting }) => (
+            {({ isSubmitting, setFieldValue }) => (
           <Form>
             <div className='form-group'>
               <label>Event Name</label>
@@ -129,9 +155,15 @@ const CreateEvent= () => {
               <ErrorMessage name="ticket_price" component="div" className="error" />
             </div>
             <div className='form-group'>
-              <label>Image URL</label>
-              <Field type="text" name="image_url" />
-              <ErrorMessage name="image_url" component="div" className="error" />
+               <label>Upload Image</label>
+              {/* <Field type="text" name="image_url" /> */}
+              <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => handleImageUpload(event.target.files[0], setFieldValue)}
+                  />
+              <ErrorMessage name="image_url" component="div" className="error" /> 
+            
             </div>
             <div className='form-group'>
               <label>Category</label>

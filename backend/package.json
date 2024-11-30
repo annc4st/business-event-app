@@ -4,7 +4,7 @@
   "description": "",
   "main": "listen.js",
   "scripts": {
-    "start": "node listen.js",
+    "start": "nodemon listen.js",
     "test": "NODE_ENV=test npm run setup-dbs && npm run seed && jest --detectOpenHandles",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "node ./db/seeds/run-seed.js",
@@ -25,6 +25,7 @@
     "express-session": "^1.18.0",
     "googleapis": "^137.1.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.2",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
