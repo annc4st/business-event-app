@@ -41,6 +41,25 @@ export const postEvent = async (newEvent) => {
     }
 }
 
+// image upload
+export const imageUpload = async (file, setFieldValue) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+        const response = await eventsApi.post(
+            `/uploads/upload`,
+            formData, {
+                headers: { 'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data.imagePath; // Return the image path 
+            
+    } catch (error){
+        console.error('Error uploading image:', error);
+        setError('Image upload failed');
+    }
+};
+
 //add user to guestlist for event when user signs up
 export const addGuest = (event_id, userId, token) => {
     return eventsApi.patch(`/events/${event_id}/guests`,  { id: userId }, {
