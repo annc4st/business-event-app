@@ -238,6 +238,7 @@ exports.patchEventGuests = async (req, res, next) => {
     }
 };
 
+//remove Guest from event
 exports.deleteEventGuest = (req, res, next) => {
     const event_id = req.params.event_id;
     const user_id = req.body.id;

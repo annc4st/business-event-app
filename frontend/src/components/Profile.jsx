@@ -22,11 +22,10 @@ const Profile = () => {
 
       {user && user.username === "admin" && (
         <div className="admin-section">
-          <p><Link to={"/admin"}>Manage events </Link>
-          </p>
-          <p>
-            <Link to={"/create-event"}>Create new event</Link>
-          </p>
+          <p><Link to={"/admin"}>Manage events </Link></p>
+          <p><Link to={"/create-event"}>Create new event</Link></p>
+          <p><Link to={"/create-location"}>Create location</Link></p>
+
           <div className="events-table">
 
           </div>

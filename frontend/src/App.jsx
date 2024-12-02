@@ -31,8 +31,8 @@ function App() {
             <Route path="/events/:event_id" element={<ViewEvent />} />
             <Route path="/my-profile" element={<Profile />} />
             <Route path ="/locations" element={<LocationsList />}/>
-            <Route path="/create-location" element={<CreateLocation />} /> 
-            <Route path="/create-event" element={<CreateEvent />} />
+            <Route path="/create-location" element={<AdminRoute><CreateLocation /></AdminRoute>} /> 
+            <Route path="/create-event" element={<AdminRoute><CreateEvent /></AdminRoute>} />
             <Route path="/admin" element={ <AdminRoute><AdminEvents /> </AdminRoute>} />
             <Route component={NotFound} />
  
