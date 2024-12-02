@@ -21,11 +21,8 @@ const Header = () => {
  
       <Link to="/">All Events</Link>{' '}
       {user && (
-        <div>
-        <Link to="/my-profile">My Profile</Link>{' '}
-        </div>
+        <Link to="/my-profile">My Profile</Link>     
       )}
-        <Link to="/create-event">Create Event</Link>{' '}
       </div>
 
 

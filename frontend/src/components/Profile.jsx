@@ -9,13 +9,11 @@ import FileUpload from "./FileUpload";
 const Profile = () => {
   const { user } = useAuthContext();
 
-  console.log("Print user >> ",  user);
-
   return (
     <div className="profile-page">
       {user && (
         <>
-          <h2>{user.username}'s Profile</h2>
+          <h2>Hi, {user.username}!</h2>
           <UserEvents user={user} />
         </>
       )}
@@ -25,10 +23,6 @@ const Profile = () => {
           <p><Link to={"/admin"}>Manage events </Link></p>
           <p><Link to={"/create-event"}>Create new event</Link></p>
           <p><Link to={"/create-location"}>Create location</Link></p>
-
-          <div className="events-table">
-
-          </div>
         </div>
       )}
 

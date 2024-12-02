@@ -4,7 +4,6 @@ const User = require('../models/User')
 
 
 const requireAuth = async (req, res, next) => {
-  console.log('Auth middleware hit');
   const { authorization } = req.headers;
 
   if (!authorization){

@@ -6,7 +6,7 @@
   --text: #FFFFFF;
   --bg-body:  #16181D; 
   /*  #161616; */
-  --bg-card: #2e2b2b;
+  --bg-card:#232323;
   --btn-color:  #ffa500; /* orange */
   --border: #A6CCFF;
   --active-color: #A6CCFF;
@@ -165,7 +165,7 @@ input, select {
   }
   .event-item-pic {
     width: 100%; /* Or specify a fixed width, e.g., 300px */
-    height: auto; /* Or specify a fixed height, e.g., 300px */
+    height: 200px; /* Or specify a fixed height, e.g., 300px */
     overflow: hidden; /* Ensures that any overflow is hidden */
     display: flex;
     align-items: center;
@@ -174,26 +174,36 @@ input, select {
   
   }
   .event-item-pic > img{
-    max-width: 100%; /* Ensures the image does not exceed the width of its parent */
-    height: auto; /* Maintains the aspect ratio */
+    width: 100%; /* Ensures the image does not exceed the width of its parent */
+   height: auto;  /* Maintains the aspect ratio */
     object-fit: cover;
     border-radius: 8px;
   }
   .event-item-det-t {
     font-weight: 600;
-    margin: 12px 0;
+    margin: 12px 0 0 0;
     text-align: left;
     color:   #CBD8E4;
     }
   
   .event-item-det {
     text-align: left;
+    line-height: 1.6;
   }
   .locat {
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    font-weight: 600;
+
     margin: 12px 0;
-    padding: 12px 8px;
+    padding: 12px 0px;
+    color: #b3b3b3;
+    line-height: 1.6;
+  }
+  .event-item-more {
+    text-align: left;
+  }
+  .event-item-more a{
+    color: var(--btn-color);
+    font-weight: 600;
   }
   .eventcard-title {
     border: solid 1px var(--border);
@@ -275,6 +285,10 @@ input, select {
   margin: 0;
   padding-left: 0;
   font-size: 16px;
+}
+
+.event-details {
+  
 }
 
 /* small tablet styles */

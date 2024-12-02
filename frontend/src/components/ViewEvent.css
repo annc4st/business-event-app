@@ -14,7 +14,7 @@
 
   .single-event-img img{
     max-width: 100%;
-  height: auto;
+    height: auto;
     grid-column: 1/9;
     
   }
@@ -22,10 +22,30 @@
   .ve{
     grid-column: 1/9;
   }
+  .ve h4 {
+    margin-bottom: 8px;
+  }
+  .event-price h4 {
+    margin-bottom: 8px;
+  }
+
+  .ve p{
+    text-align: left;
+  }
   
   .border-around {
     border: 1px solid var(--border);
+    /* border-radius: 8px; */
   }
+
+  .date-time  {
+    text-align: center;
+    font-size: 14px;
+    color: #b3b3b3;
+    font-weight: 600;
+    background-color: #2C2C2C;
+  }
+   
   .event-category {
     grid-column: 1/9;
   }
@@ -47,22 +67,31 @@
 
   .ve-el {
     margin-top: 1em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .ve-el-children {
+    text-align: center; /* Center-align content in each column (optional) */
   }
 .bolder-subtitle {
     margin-bottom: 0;
 }
-  
-  .date-time  {
-    text-align: center;
-    font-size: 16px;
+  .additional-info p{
+    text-align: left;
   }
-   
+
   .ticket-price {
     text-align: center;
   }
   .ticket-price p{
     color: var(--btn-color);
     font-weight: 600;
+  }
+
+  .address p {
+    padding: 8px;
   }
  .action-btns {
     margin: 1em auto;

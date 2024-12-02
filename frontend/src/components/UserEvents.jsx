@@ -34,14 +34,10 @@ const UserEvents = ({ user }) => {
 
   //Cancel participation
   const cancelParticipation = (eventId, event_name) => {
-    if (
-      window.confirm(
-        `Are you sure you want to cancel in event ${event_name} $ ?`
-      )
-    ) {
+    if (window.confirm(`Are you sure you want to cancel in event ${event_name} ?`) ) {
       removeGuest(eventId, user.userID, user.token)
         .then(() => {
-          window.alert(`Your participation in event ${eventId} was removed!`);
+          window.alert(`Your participation in event ${event_name} was removed!`);
           setEvents((prevEvents) =>
             prevEvents.filter((event) => event.event_id !== eventId)
           );
@@ -65,30 +61,26 @@ const UserEvents = ({ user }) => {
             <li key={event.event_id}>
               <div className="user-signedup-event-details">
                 <h4 onClick={() => toggleEventDetails(event.event_id)}>
-                  {event.event_name}
+                  {event.event_name} - Click to expand
                 </h4>
                 {expandedEventId === event.event_id && (
                   <div className="event-details">
                     <p>{event.description}</p>
                     <p>
                       Start Time:{" "}
-                      {event.start_t
-                        ? new Date(event.start_t).toLocaleString()
-                        : "N/A"}
+                      {event.start_t ? new Date(event.start_t).toLocaleString() : "N/A"}
                     </p>
                     <p>
-                      End Time:{" "}
+                      End Time:{" "} 
                       {event.end_t
                         ? new Date(event.end_t).toLocaleString()
                         : "N/A"}
                     </p>
+                    <p>Location: {" "}
+                    {event.first_line_address}, {event.second_line_address}, {event.city}, {event.postcode} </p>
                     <button
-                      onClick={() =>
-                        cancelParticipation(event.event_id, event.event_name)
-                      }
-                    >
-                      Cancel
-                    </button>
+                      onClick={() =>cancelParticipation(event.event_id, event.event_name)
+                      }> Cancel</button>
                   </div>
                 )}
               </div>
