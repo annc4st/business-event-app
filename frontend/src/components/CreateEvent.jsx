@@ -141,11 +141,11 @@ const CreateEvent = () => {
                 </div>
                 <div className="form-group">
                   <TimePickerField name="starttime" label="Start Time" />
-                  <ErrorMessage
+                  {/* <ErrorMessage
                     name="starttime"
                     component="div"
                     className="error"
-                  />
+                  /> */}
                 </div>
                 <div className="form-group">
                   <label>End Date</label>
@@ -158,11 +158,11 @@ const CreateEvent = () => {
                 </div>
                 <div className="form-group">
                   <TimePickerField name="endtime" label="End Time" />
-                  <ErrorMessage
+                  {/* <ErrorMessage
                     name="endtime"
                     component="div"
                     className="error"
-                  />
+                  /> */}
                 </div>
                 <div className="form-group">
                   <label>Ticket Price</label>

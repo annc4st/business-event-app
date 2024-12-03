@@ -310,7 +310,7 @@ input, select {
   .events-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 10px;
+    column-gap: 16px;
   }
   .events-list .event-item {
     grid-column: span 1;

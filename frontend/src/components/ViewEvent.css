@@ -1,7 +1,7 @@
 /* ViewEvent */
 
 .content-view-event {
-    margin: 1em;
+    margin: 1em 0;
     background-color: var(--bg-card);
     border-radius: 5px;
 
@@ -35,7 +35,6 @@
   
   .border-around {
     border: 1px solid var(--border);
-    /* border-radius: 8px; */
   }
 
   .date-time  {
@@ -93,12 +92,16 @@
   .address p {
     padding: 8px;
   }
+  .address p {
+    padding: 8px;
+  }
  .action-btns {
     margin: 1em auto;
 
  }
- .central-position {
+ .signup {
     text-align: center;
+    padding: 8px;
  }
  .signUp {
     background-color: var(--btn-color);
@@ -107,6 +110,7 @@
 
  .addTo-calendar {
     margin-bottom: 1em;
+    text-align: center;
  }
   
   /* small tablet styles */

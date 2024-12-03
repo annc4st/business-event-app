@@ -148,6 +148,32 @@ const ViewEvent = () => {
                         : "Be the first to sign up"}
                     </h4>
                   </div>
+
+        {/* action btns */}
+                  <div className="ve action-btns">
+                <div className="addTo-calendar">
+                  <AddToCalendar event={singleEvent} />
+                </div>
+
+                <div className="ve signup ">
+                  {!foundGuest ? (
+                    <button
+                      className="signUp"
+                      type="button"
+                      onClick={handleSignUp}
+                      disabled={signingUp}
+                    >
+                      {signingUp ? "Signing Up..." : "Sign Up"}
+                    </button>
+                  ) : (
+                    <div className="ev ev-already-s signup border-around">
+                      <p>You have already signed up for this event.</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+                  {/* end action btns */}
                 </div>
 
                 <div className="second-col">
@@ -159,14 +185,13 @@ const ViewEvent = () => {
                 </div>
               </div>
               {/* close 2nd col */}
-              {/* lower subsection */}
+      {/* lower subsection Additional info*/}
               <div className="ve">
                 <h4 className="bolder-subtitle">Additional information</h4>
                 <p>{singleEvent.description}</p>
               </div>
 
               <div className="ve">
-              {/* <FaLocationDot /> */}
                 <h4 className="bolder-subtitle"> <FaLocationDot /> Address </h4>
                 <div className="address border-around">
                   <p> 
@@ -177,28 +202,7 @@ const ViewEvent = () => {
                 </div>
               </div>
 
-              <div className="ve action-btns">
-                <div className="addTo-calendar">
-                  <AddToCalendar event={singleEvent} />
-                </div>
-
-                <div className="ve central-position">
-                  {!foundGuest ? (
-                    <button
-                      className="signUp"
-                      type="button"
-                      onClick={handleSignUp}
-                      disabled={signingUp}
-                    >
-                      {signingUp ? "Signing Up..." : "Sign Up"}
-                    </button>
-                  ) : (
-                    <div className="ev ev-already-s">
-                      <p>You have already signed up for this event.</p>
-                    </div>
-                  )}
-                </div>
-              </div>
+              
             </div>
           </div>
         </div>
