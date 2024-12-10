@@ -75,20 +75,22 @@ exports.patchCategory = (req, res, next) => {
     })
     .catch((error) => {
         next(error);
-        })
+    })
 }
 
-exports.getEvents = (req, res, next) => {
-    const {category } = req.query;
-    fetchEvents(category).then((events) => {
-        // console.log(events)
-        res.status(200).send(events);
-    })
-    .catch((err) =>{
-        console.log('Error getting events:', err);
-        next(err);
-    });
-}
+// EVENTS
+exports.getEvents = async (req, res, next) => {
+    const { category, title } = req.query;
+  
+    try {
+      const events = await fetchEvents(category, title);
+      res.status(200).send(events);
+    } catch (err) {
+      console.log('Error getting events:', err);
+      next(err);
+    }
+  };
+
 
 exports.getEventById = (req, res, next) => {
     const {event_id} = req.params;

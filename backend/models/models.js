@@ -52,6 +52,79 @@ exports.updateCategory = async (slug, newDescription) => {
     });
 };
 
+//EVENTS
+exports.fetchEvents = async (category, title) => {
+  const baseQuery = `
+  SELECT 
+    events.event_id,
+    events.event_name, 
+    events.description, 
+    events.start_t,
+    events.end_t,
+    events.ticket_price, 
+    events.image_url, 
+    categories.slug AS category, 
+    locations.postcode, 
+    locations.first_line_address, 
+    locations.second_line_address, 
+    locations.city
+  FROM events
+  JOIN categories ON events.category = categories.slug
+  JOIN locations ON events.location = locations.location_id
+`;
+
+const filters = [];
+const values = [];
+
+ // Add category filter if provided
+ if (category) {
+  filters.push(`events.category = $1`);
+  values.push(category);
+
+// Validate the category
+const categoryExists = await db.query(
+  `SELECT slug FROM categories WHERE slug = $1;`,
+  values
+);
+if (categoryExists.rows.length === 0) {
+  return Promise.reject({
+    status: 404,
+    message: "Category does not exist",
+  });
+}
+}
+
+// Add title filter if provided
+if (title) {
+  filters.push(`LOWER(events.event_name) LIKE $${values.length + 1}`);
+  values.push(`%${title.toLowerCase()}%`);
+}
+
+ // Finalize query with filters
+ const finalQuery = `${baseQuery} ${filters.length ? `WHERE ${filters.join(' AND ')}` : ''}`;
+ const result = await db.query(finalQuery, values);
+
+  // Fetch attendees for each event
+  const eventsWithAttendees = await Promise.all(
+    result.rows.map(async (event) => {
+      const attendeesQuery = `
+        SELECT users.id, users.username, users.email 
+        FROM eventguests
+        JOIN users ON eventguests.guest_id = users.id
+        WHERE eventguests.event_id = $1;
+      `;
+      const attendeesResult = await db.query(attendeesQuery, [event.event_id]);
+      event.attendees = attendeesResult.rows;
+      return event;
+    })
+  );
+
+  return eventsWithAttendees;
+
+}
+
+
+/*
 exports.fetchEvents = async (category) => {
   let eventsQuery;
 
@@ -121,6 +194,7 @@ exports.fetchEvents = async (category) => {
 
   return eventsWithAttendees;
 };
+*/
 
 exports.fetchEventById = async (id) => {
   const eventQuery = `

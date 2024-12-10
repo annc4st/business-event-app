@@ -292,7 +292,7 @@ input, select {
 }
 
 /* small tablet styles */
-@media screen and (min-width: 620px){
+@media screen and (min-width: 570px){
 
   body {
     font-size: 18px;
@@ -301,7 +301,7 @@ input, select {
   .category-selector{
  
     grid-template-columns: repeat(6, 1fr);
-    gap: 2em;
+    gap: 1em;
   }
   .category {
     grid-column: span 1;
@@ -324,6 +324,15 @@ input, select {
   body {
     max-width: 1060px;
     margin: 0 auto;
+  }
+
+    .category-selector{
+ 
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2em;
+  }
+  .category {
+    grid-column: span 1;
   }
 
   .events-list {

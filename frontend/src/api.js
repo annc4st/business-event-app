@@ -6,13 +6,21 @@ const eventsApi = axios.create({
   withCredentials: true,
 });
 
-export const getEvents = async (category) => {
+export const getEvents = async (category, title) => {
   let params = {};
   if (category) {
     params.category = category;
   }
-  const response = await eventsApi.get("/events", { params });
-  return response.data;
+  if (title) {
+    params.title = title;
+  }
+  try {
+    const response = await eventsApi.get("/events", { params });
+    return response.data;
+
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getCategories = async () => {
@@ -78,7 +86,7 @@ export const addGuest = (event_id, userId, token) => {
       }
     )
     .then((response) => {
-      // console.log("api.js line >> ",response.data);
+     
       return response.data;
     })
     .catch((error) => {
@@ -98,7 +106,7 @@ export const removeGuest = (event_id, userId, token) => {
       },
     })
     .then((response) => {
-      console.log("api.js line 103>> ", response.data);
+      // console.log("api.js line 103>> ", response.data);
       return response.data;
     })
     .catch((error) => {
@@ -111,7 +119,7 @@ export const getGuests = (event_id) => {
   return eventsApi
     .get(`/events/${event_id}/guests`)
     .then((response) => {
-      console.log("api.js line 85> ", response.data);
+      // console.log("api.js line 85> ", response.data);
       return response.data;
     })
     .catch((error) => {
@@ -156,7 +164,7 @@ export const registerUser = async (userData) => {
     if (error.response && error.response.data && error.response.data.message) {
       throw new Error(error.response.data.message);
     } else {
-      console.log(error);
+      // console.log(error);
       throw new Error(
         "An error occurred. Looks like we have account with this username or email."
       );
@@ -168,9 +176,10 @@ export const registerUser = async (userData) => {
 export const loginUser = async (credentials) => {
   try {
     const response = await eventsApi.post(`/auth/login`, credentials);
-    console.log(response.data);
+
     return response.data;
   } catch (error) {
+ 
     if (error.response && error.response.data && error.response.data.error) {
       // Throwing backend-specific error message
       throw new Error(error.response.data.error);
@@ -189,7 +198,7 @@ export const getUserSignedUpEvents = async (token) => {
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data)
+    // console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("Error fetching signed-up events:", error);

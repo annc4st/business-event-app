@@ -25,7 +25,6 @@ const requireAuth = async (req, res, next) => {
       console.log("found user by id", req.user.id)
     }
 
-  /// Proceed to next middleware/route handler
   next()
 
   } catch(error) {

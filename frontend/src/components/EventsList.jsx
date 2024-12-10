@@ -3,17 +3,23 @@ import EventItem from "./EventItem";
 import React, { useEffect, useState } from "react";
 import {Link, Navigate, useNavigate, useParams} from 'react-router-dom';
 import NotFound from './errors/NotFound';
+import EventSearch from "./EventSearch";
 
 
 
 const EventsList = () => {
     const [categories, setCategories] = useState([]);
     const [events, setEvents] = useState([]);
+    const [searchEvents, setSearchEvents] = useState([]);
+
     const {category} = useParams();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(category || '');
+    const [searchTitle, setSearchTitle] = useState('');
+
+
 
     // Fetch categories and events based on selected category
     useEffect(() => {
@@ -25,11 +31,19 @@ const EventsList = () => {
           const fetchedCategories = await getCategories();
           setCategories(fetchedCategories);
           
-          // Fetch events based on selected category
-          const fetchedEvents = await getEvents(selectedCategory);
+          // Fetch events based on selected category and title
+          const filters = {};
+          if (selectedCategory) filters.category = selectedCategory;
+        if (searchTitle) filters.title = searchTitle;
+
+          // const fetchedEvents = await getEvents(selectedCategory);
+          // setEvents(fetchedEvents);
+          const fetchedEvents = await getEvents(filters.category, filters.title);
           setEvents(fetchedEvents);
-          
+          setSearchEvents(fetchedEvents); // Sync initial results
+                    
           setIsLoading(false);
+
         } catch (err) {
           console.error('Error fetching data:', err);
           setError({ message: err.message, status: err.status });
@@ -38,12 +52,25 @@ const EventsList = () => {
       };
   
       fetchCategoriesAndEvents();
-    }, [selectedCategory]);
+    }, [selectedCategory, searchTitle]);
 
     const handleChangeCategory = (catg) => {
         setSelectedCategory(catg);
         navigate(`/${catg}`);
     };
+
+
+  // Handle title search changes
+  // const handleSearchChange = (title) => {
+  //   setSearchTitle(title); // Trigger useEffect with updated searchTitle
+  // };
+
+  // Handle search submission
+  const handleSearchSubmit = (title) => {
+    setSearchTitle(title); 
+  };
+
+
 
 
     if (isLoading) return <div className="loading-container">
@@ -65,6 +92,9 @@ const EventsList = () => {
                 )
             })}
         </div>
+        {/* <EventSearch onSearch={handleSearch}/> */}
+
+        <EventSearch onSearch={handleSearchSubmit} />
 
    
         <div className="events-container ">

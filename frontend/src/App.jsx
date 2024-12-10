@@ -15,10 +15,12 @@ import Hero from './components/Hero';
 import Signup from "./components/Signup";
 import AdminEvents from "./components/AdminEvents";
 import AdminRoute from "./components/AdminRoute";
+import { useAuthCheck } from "./hooks/useAuthCheck";
 
 
 
 function App() {
+  // useAuthCheck();
   return (
     <>
       <Header />

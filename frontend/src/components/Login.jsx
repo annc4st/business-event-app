@@ -1,26 +1,26 @@
 import React, { useState, useContext} from "react";
-// import { UserContext } from "../contexts/UserContext";
 import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
-import * as Yup from 'yup';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {useLogin}  from '../hooks/useLogin'
+
 
 const Login = () => {
  
-  
   const [ password, setPassword ] = useState('')
   const [ username, setUsername] = useState('')
   const { login, isLoading, error } = useLogin()
-  
-
- 
+   
   const navigate = useNavigate();
+
 
   const handleLogin = async(e) => {
     e.preventDefault();
+    try {
     await login(username, password );
      navigate('/');
+    } catch (error){
+      console.log("Login failed:", error.message);
+    }
   }
 
   return (
@@ -30,7 +30,7 @@ const Login = () => {
       
       <form onSubmit={handleLogin} >
         <input
-          // onChange={handleChange}
+
           onChange={(e) => setUsername(e.target.value)}
           type="text"
           name="username"
@@ -41,7 +41,6 @@ const Login = () => {
         />
 
         <input
-          // onChange={handleChange}
           name="password" type="password"
           id="password"
           onChange={(e) => setPassword(e.target.value)} 

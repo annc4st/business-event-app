@@ -15,14 +15,15 @@ export const useLogin = () => {
         try {
             const json = await loginUser({username, password});
             localStorage.setItem('user',  JSON.stringify(json))
-            //update auth context
+            //updating auth context
             dispatch({ type: 'LOGIN', payload: json })
             setIsLoading(false)
         }catch (error) {
             setIsLoading(false);
             setError(error.message);  
+            throw error;
         }
     };
 
-        return { login, isLoading, error }
+    return { login, isLoading, error }
 }
