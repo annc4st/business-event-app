@@ -60,11 +60,6 @@ const EventsList = () => {
     };
 
 
-  // Handle title search changes
-  // const handleSearchChange = (title) => {
-  //   setSearchTitle(title); // Trigger useEffect with updated searchTitle
-  // };
-
   // Handle search submission
   const handleSearchSubmit = (title) => {
     setSearchTitle(title); 
@@ -81,6 +76,7 @@ const EventsList = () => {
 
     return (
         <div>
+        <div className="cat-and-search">
         <div className="category-selector">
                   {categories.map((catg)=> {
                 return (
@@ -92,9 +88,9 @@ const EventsList = () => {
                 )
             })}
         </div>
-        {/* <EventSearch onSearch={handleSearch}/> */}
-
+    
         <EventSearch onSearch={handleSearchSubmit} />
+        </div>
 
    
         <div className="events-container ">
