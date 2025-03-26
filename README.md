@@ -1,10 +1,7 @@
 # business-event-app
 
-### Notes
-I am currently working on moving frontend and backend to the same hosting service (my authorization did not work properly because of that)
-I am also looking for new postgresql db due to the end of life of the elephantsql.
+https://eventapp-ng2b.onrender.com/
 
-I found a new db service
 
 Here are the endpoints:
 ## Auth
@@ -30,4 +27,3 @@ User auth is using JWT.
 
 The frontend is written using React framework.
 
-More notes to follow...
