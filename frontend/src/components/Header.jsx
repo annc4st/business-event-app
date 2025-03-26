@@ -19,9 +19,9 @@ const Header = () => {
       </label>
       <div className="menu">
  
-      <Link to="/">All Events</Link>{' '}
+      <Link to="/">Events</Link>{' '}
       {user && (
-        <Link to="/my-profile">My Profile</Link>     
+        <Link to="/my-profile">Profile</Link>     
       )}
       </div>
 
