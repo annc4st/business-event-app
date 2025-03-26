@@ -175,7 +175,6 @@ const CreateEvent = () => {
                 </div>
                 <div className="form-group">
                   <label>Upload Image</label>
-                  {/* <Field type="text" name="image_url" /> */}
                   <input
                     type="file"
                     accept="image/*"

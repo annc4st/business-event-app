@@ -5,7 +5,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
 
 
-
 const TimePickerField = ({ label, ...props }) => {
   const [field, meta, helpers] = useField(props);
   const { setValue } = helpers;
@@ -15,8 +14,6 @@ const TimePickerField = ({ label, ...props }) => {
     const formattedTime = format(val, 'HH:mm:ss');
     setValue(formattedTime);
   };
-
-  
 
   return (
     <div>

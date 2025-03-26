@@ -1,11 +1,8 @@
-import React, { useContext } from 'react';
-// import { UserContext } from '../contexts/UserContext';// Adjust the import path
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogout } from "../hooks/useLogout";
 
 const LogoutBtn = () => {
-    // const { logout } = useContext(UserContext);
-
     const { logout} = useLogout();
     const navigate = useNavigate();
     

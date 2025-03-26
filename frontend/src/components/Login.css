@@ -13,10 +13,7 @@
     margin-bottom: 1em; 
 
 }
-/* form {
-    max-width: 400px;
-} */
-
+ 
  h1 {
     text-align: center;
     margin-top: 2em;
@@ -59,7 +56,5 @@ form button:hover {
 @media screen and (min-width: 620px){
     .form-wrapper {
         max-width: 500px;
-
     }
-   
-    }
+}

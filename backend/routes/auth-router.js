@@ -9,7 +9,6 @@ const { getMyEvents } = require('../controllers/controllers');
 
 authRouter.post('/register', register);
 authRouter.post('/login', login);
-
 authRouter.route('/my-events').get(requireAuth, getMyEvents);
 
 

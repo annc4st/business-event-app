@@ -2,7 +2,7 @@ import React, { useState, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { createLocation } from '../api'; // Adjust the import path as needed
+import { createLocation } from '../api';  
 // import { UserContext } from '../contexts/UserContext';
 
 import { useAuthContext } from '../hooks/useAuthContext'
@@ -14,8 +14,6 @@ const CreateLocation = () => {
     const { user } = useAuthContext();
     const navigate = useNavigate();
     const [error, setError] = useState(null);
-      // Validation schema
-
     
   const validationSchema = Yup.object().shape({
     postcode: Yup.string()

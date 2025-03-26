@@ -12,7 +12,7 @@ const AdminEvents = () => {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  const [selectedEvent, setSelectedEvent] = useState(""); //???
+  const [selectedEvent, setSelectedEvent] = useState("");
 
   const formatStartTime = (isoDate) => {
     return format(new Date(isoDate), 'yyyy-MM-dd HH:mm');
@@ -34,15 +34,14 @@ const AdminEvents = () => {
         }
     }
 
-    fetchEvents(); // Call the function inside useEffect
+    fetchEvents();  
 }, []); 
 
   const handleDeleteEvent = async (event_id) => {
     if (user.username === "admin"){
     try {
-      const result = await deleteEvent(event_id); // Call the function
-      console.log("Event deleted successfully:", result);
-      // Optionally, update UI or state here
+      const result = await deleteEvent(event_id);
+     
     } catch (error) {
         console.log(error);
       console.error("Error deleting event:", error.message);

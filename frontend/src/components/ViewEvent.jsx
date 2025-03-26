@@ -26,7 +26,7 @@ const ViewEvent = () => {
         return getGuests(event_id);
       })
       .then((fetchedGuests) => {
-        setGuests(fetchedGuests.guests || []); //guests of the event
+        setGuests(fetchedGuests.guests || []);  
         setIsLoading(false);
       })
       .catch((error) => {

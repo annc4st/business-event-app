@@ -1,4 +1,4 @@
-// const fs = require("fs/promises");
+
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
@@ -59,8 +59,8 @@ exports.login = async (req, res) => {
     res.status(200).json({ 
       username: user.username, 
       userID: user.id, 
-      email: user.email, // Include email here
-      role: user.role,   // Include role here
+      email: user.email, 
+      role: user.role, 
       token });
   } catch (error) {
     console.log("Login error:", error.message);

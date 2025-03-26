@@ -4,6 +4,7 @@
     margin: 1em 0;
     background-color: var(--bg-card);
     border-radius: 5px;
+    padding-bottom: 8px;
 
 }
 .view-event {
@@ -92,9 +93,10 @@
   .address p {
     padding: 8px;
   }
-  .address p {
-    padding: 8px;
+  .address {
+    background: #69797387;
   }
+ 
  .action-btns {
     margin: 1em auto;
 

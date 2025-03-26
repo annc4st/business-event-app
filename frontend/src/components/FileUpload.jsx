@@ -22,7 +22,7 @@ const FileUpload = () => {
         formData.append('image', selectedFile);
 
         try {
-            const response = await axios.post('http://localhost:9000/api/uploads/upload', formData, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/uploads/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
