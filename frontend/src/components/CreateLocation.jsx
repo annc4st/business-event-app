@@ -27,7 +27,7 @@ const CreateLocation = () => {
  
       const handleSubmit= (values, { setSubmitting }) => {
   
-        if(user.role==="admin" ){
+        if(user.username =="admin" ){
           createLocation(values)
           .then((response) => {
             console.log('Location created:', response.data);
