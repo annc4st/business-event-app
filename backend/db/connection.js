@@ -13,26 +13,13 @@ throw new Error('Required environment variables are not set');
  
 const config = {};
 if (ENV === 'production') {
-  config.connectionString = process.env.DATABASE_URL;
+  config.connectionString =  process.env.DATABASE_URL;
+  config.ssl  = {
+    rejectUnauthorized: false, // This allows self-signed certificates (if used by the host)
+  };
   config.max = 2;
+  
 }
 
-
-//Configure the postgresql client
-// const config = {
-//   host: process.env.PGHOST,
-//   database: process.env.PGDATABASE,
-//   user: process.env.PGUSER,
-//   password: process.env.PGPASSWORD,
-//   port: process.env.PGPORT || 5432,  
-//   ssl: {
-//     rejectUnauthorized: false, 
-//   },
-
-// }
-
-// if (process.env.NODE_ENV === 'production') {
-//   config.ssl = { rejectUnauthorized: false };
-// }
 
 module.exports = new Pool(config);

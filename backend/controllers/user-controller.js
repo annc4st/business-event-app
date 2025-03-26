@@ -7,6 +7,11 @@ const { createToken}  = require('../models/util_func')
 
 
 exports.register = async (req, res) => {
+
+  console.log(`Sequelize is connected to DB: ${User.sequelize.getDatabaseName()}`);
+  console.log(`Current environment: ${process.env.NODE_ENV}`);
+  console.log(`DB URL: ${process.env.DATABASE_URL}`);
+  
   const { username, password, email } = req.body;
   if (!username || !password || !email) {
     return res.status(400).json({ error: "All fields are required" });
@@ -22,7 +27,7 @@ exports.register = async (req, res) => {
     });
 
     const token = createToken(user.id);
-
+    console.log("response create user ", res.json)
     res.status(201).json({ username, email, token });
   } catch (error) {
     console.log("error at registering user ", error.message);

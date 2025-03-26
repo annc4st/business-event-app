@@ -1,16 +1,19 @@
 # Base image
 FROM node:18-alpine
 
-RUN npm install -g nodemon
+# RUN npm install -g nodemon
 
 # Set working directory inside the container
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package*.json package-lock.json ./
 
-# Install dependencies
-RUN npm install
+# Remove Husky "prepare" script before installing dependencies
+# RUN sed -i '/"prepare"/d' package.json
+
+# Install dependencies, but prevent Husky from running
+RUN npm install --production
 
 # Copy application code
 COPY . .

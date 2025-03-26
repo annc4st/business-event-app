@@ -3,7 +3,7 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV || 'development'}`
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const { connectDB } = require('./db/database-seq');
+// const { connectDB } = require('./db/database-seq');
 const User = require('./models/User');
 const bodyParser = require('body-parser');
 const apiRouter = require('./routes/api-router'); 
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 
  
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: process.env.CLIENT_URL ||'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -29,7 +29,7 @@ app.use(cors({
 
 // middleware to set headers explicitly (optional, for completeness)
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL || req.headers.origin);
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');

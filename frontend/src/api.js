@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const eventsApi = axios.create({
-  baseURL: "http://localhost:9000/api",
+  baseURL: import.meta.env.VITE_API_URL,  // Use environment variable
+  //  "http://localhost:9000/api",
   // baseURL : "https://business-event-app.onrender.com/api",
   withCredentials: true,
 });

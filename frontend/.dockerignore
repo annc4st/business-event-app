@@ -1,0 +1,10 @@
+node_modules
+.dockerignore
+.git
+.gitignore
+
+ 
+# Docker-specific files
+Dockerfile
+eslint.config.js
+.vscode
